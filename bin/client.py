@@ -1,7 +1,7 @@
 import zenduty
 from zenduty.exceptions import ApiException
 
-api_instance = zenduty.TeamsApi(zenduty.ApiClient('eb9b14a8dcf36d04fd250d36db4e33c7333dc975'))
+api_instance = zenduty.TeamsApi(zenduty.ApiClient('ENTER-YOUR-ACCESS-TOKEN-HERE'))
 
 try:
     # Get Incidents
