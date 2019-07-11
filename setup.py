@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name='zenduty-api',
-	version='0.1',
+	version='0.2',
 	description='Python SDK wrapper for the Zenduty API',
 	long_description='Python SDK wrapper for the Zenduty API',
 	long_description_content_type="text/x-rst",
