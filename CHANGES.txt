@@ -1,1 +1,2 @@
-v1.0, 04 July 2019, --Initial Release
+v0.1, 04 July 2019, --Initial Release
+v0.2, 11 July 2019, --Added create incident endpoint
