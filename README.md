@@ -26,10 +26,15 @@ You can then import the package into your python script.
 ```
 import zenduty
 ```
-Based on the endpoint you want to communicate with, create an object of the required class. For example, to get details of all the teams:
+Based on the endpoint you want to communicate with, create an object of the required class. For example, to create an incident:
 ```
-api_obj = zenduty.TeamsApi(zenduty.ApiClient('your-access-token'))
-response = api_obj.get_teams()
+api_obj = zenduty.IncidentsApi(zenduty.ApiClient('your-access-token'))
+body = {"service":"c7fff4c5-2def-41e8-9120-c63f649a825c",
+        "escalation_policy":"a70244c8-e343-4dd0-8d87-2f767115568a",
+        "user":null,
+        "title":"Name of trial",
+        "summary":"summary of trial"}
+response = api_obj.create_incident(body)
 print(response.data)
 print(response.status_code)
 ```
