@@ -47,4 +47,4 @@ There is a sample skeleton code in bin/. Add your access token to it and modify 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
