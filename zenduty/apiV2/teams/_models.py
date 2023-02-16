@@ -4,6 +4,7 @@ from typing import Union
 import json
 from ..serializer import serialize
 
+
 class User(object):
     username: str
     first_name: str
@@ -17,9 +18,10 @@ class User(object):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+
     def toJSON(self):
-        return json.dumps(self, default=serialize, 
-            sort_keys=True, indent=4)
+        return json.dumps(self, default=serialize, sort_keys=True, indent=4)
+
 
 class Member(object):
     unique_id: UUID

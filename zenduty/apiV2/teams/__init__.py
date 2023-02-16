@@ -2,6 +2,8 @@ from ..client import ZendutyClient, ZendutyClientRequestMethod
 from ._models import Team, Member
 from uuid import UUID
 from .schedules import ScheduleClient
+from .escalation_policies import EscalationPolicyClient
+
 
 class ZendutyTeamsClient:
     def __init__(self, client: ZendutyClient):
@@ -9,6 +11,9 @@ class ZendutyTeamsClient:
 
     def get_schedule_client(self, team: Team) -> ScheduleClient:
         return ScheduleClient(self._client, team)
+
+    def get_escalation_policy_client(self, team: Team) -> EscalationPolicyClient:
+        return EscalationPolicyClient(self._client, team)
 
     def create_team(self, name: str) -> Team:
         response = self._client.execute(
