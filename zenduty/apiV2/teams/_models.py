@@ -1,9 +1,10 @@
 from uuid import UUID
 from datetime import datetime
 from typing import Union
+import json
+from ..serializer import serialize
 
-
-class User:
+class User(object):
     username: str
     first_name: str
     last_name: str
@@ -16,9 +17,11 @@ class User:
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+    def toJSON(self):
+        return json.dumps(self, default=serialize, 
+            sort_keys=True, indent=4)
 
-
-class Member:
+class Member(object):
     unique_id: UUID
     team: UUID
     user: User
@@ -44,7 +47,7 @@ class Member:
         self.role = role
 
 
-class Role:
+class Role(object):
     unique_id: UUID
     team: UUID
     title: str
@@ -73,7 +76,7 @@ class Role:
         self.rank = rank
 
 
-class Team:
+class Team(object):
     unique_id: UUID
     name: str
     account: UUID
