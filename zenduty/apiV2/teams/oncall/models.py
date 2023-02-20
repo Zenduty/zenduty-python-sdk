@@ -1,7 +1,9 @@
 from typing import List
 
+from zenduty.apiV2.serializer import JsonSerializable
 
-class EscalationPolicy:
+
+class EscalationPolicy(JsonSerializable):
     name: str
     summary: str
     description: str
@@ -29,7 +31,7 @@ class EscalationPolicy:
         self.global_ep = global_ep
 
 
-class Team:
+class Team(JsonSerializable):
     unique_id: str
     name: str
 
@@ -38,7 +40,7 @@ class Team:
         self.name = name
 
 
-class User:
+class User(JsonSerializable):
     username: str
     first_name: str
     email: str
@@ -53,7 +55,7 @@ class User:
         self.last_name = last_name
 
 
-class OnCall:
+class OnCall(JsonSerializable):
     escalation_policy: EscalationPolicy
     team: Team
     users: List[User]

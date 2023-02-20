@@ -19,7 +19,7 @@ class __alertsItr__:
 
     def __next__(self):
         if len(self.results) == self.pos:
-            if next is None:
+            if self.next is None:
                 raise StopIteration
             val = 0
             for _ in range(0, 3):

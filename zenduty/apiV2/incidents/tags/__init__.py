@@ -14,7 +14,7 @@ class IncidentTagClient:
     def get_all_tags(self) -> list[Tag]:
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
-            endpoint="/api/incidents/%s/tags/" % self._incident.unique_id,
+            endpoint="/api/incidents/%s/tags/" % self._incident.incident_number,
             success_code=200,
         )
         return [Tag(**r) for r in response]
@@ -30,7 +30,7 @@ class IncidentTagClient:
 
     def create_tag(
         self,
-        team_tag: str,
+        team_tag: UUID,
     ) -> Tag:
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,

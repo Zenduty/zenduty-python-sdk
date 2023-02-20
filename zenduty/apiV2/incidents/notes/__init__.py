@@ -4,18 +4,50 @@ from ..models import Incident
 from .models import IncidentNote
 
 
+class __IncidentNoteItr__:
+    def __init__(self, client: ZendutyClient, results: list, next: str, pos: int = 0):
+        self._client = client
+        self.results = results
+        self.next = next
+        self.pos = pos
+
+    def __iter__(self):
+        return self
+
+    def __next__(self) -> IncidentNote:
+        if len(self.results) == self.pos:
+            if self.next is None:
+                raise StopIteration
+            val = 0
+            for _ in range(0, 3):
+                val = self.next.find("/", val + 1)
+            response = self._client.execute(
+                method=ZendutyClientRequestMethod.GET,
+                endpoint=self.next[val:],
+                success_code=200,
+            )
+            self.next = response["next"]
+            self.pos = 0
+            self.results = response["results"]
+        v = self.results[self.pos]
+        self.pos += 1
+        return IncidentNote(**v)
+
+
+
 class IncidentNoteClient:
     def __init__(self, client: ZendutyClient, incident: Incident):
         self._incident = incident
         self._client = client
 
-    def get_all_incident_notes(self) -> list[IncidentNote]:
+    def get_all_incident_notes(self) -> __IncidentNoteItr__:
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
-            endpoint="/api/incidents/%s/note/" % self._incident.unique_id,
+            endpoint="/api/incidents/%s/note/" % self._incident.incident_number,
             success_code=200,
         )
-        return [IncidentNote(**r) for r in response]
+
+        return __IncidentNoteItr__(self._client, response["results"], response["next"])
 
     def get_incident_note_by_id(self, incident_note_id: str) -> IncidentNote:
         response = self._client.execute(

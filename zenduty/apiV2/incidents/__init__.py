@@ -7,6 +7,36 @@ from ..client import ZendutyClient, ZendutyClientRequestMethod
 from .models import Incident
 from ..events.models import Event
 
+class __IncidentItr__:
+    def __init__(self, client: ZendutyClient, results: list, next: str, pos: int = 0):
+        self._client = client
+        self.results = results
+        self.next = next
+        self.pos = pos
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if len(self.results) == self.pos:
+            if self.next is None:
+                raise StopIteration
+            val = 0
+            for _ in range(0, 3):
+                val = self.next.find("/", val + 1)
+            response = self._client.execute(
+                method=ZendutyClientRequestMethod.GET,
+                endpoint=self.next[val:],
+                success_code=200,
+            )
+            self.next = response["next"]
+            self.pos = 0
+            self.results = response["results"]
+        v = self.results[self.pos]
+        self.pos += 1
+        return Incident(**v)
+
+
 
 class IncidentClient:
     def __init__(self, client: ZendutyClient):
@@ -18,13 +48,13 @@ class IncidentClient:
     def get_tags_client(self, incident: Incident) -> IncidentTagClient:
         return IncidentTagClient(self._client, incident)
 
-    def get_all_incidents(self) -> list[Incident]:
+    def get_all_incidents(self) -> __IncidentItr__:
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/",
             success_code=200,
         )
-        return [Incident(**r) for r in response]
+        return __IncidentItr__(self._client, response["results"], response["next"])
 
     def get_incident_by_incident_number(self, incident_number: int) -> Incident:
         response = self._client.execute(
@@ -44,6 +74,7 @@ class IncidentClient:
         escalation_policy: UUID,
         sla: UUID,
         team_priority: UUID,
+        **kwargs
     ) -> Incident:
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
@@ -52,11 +83,11 @@ class IncidentClient:
                 "summary": summary,
                 "status": status,
                 "title": title,
-                "service": str(service),
-                "assigned_to": str(assigned_to),
-                "escalation_policy": str(escalation_policy),
-                "sla": str(sla),
-                "team_priority": str(team_priority),
+                "service": (service),
+                "assigned_to": (assigned_to),
+                "escalation_policy": (escalation_policy),
+                "sla": (sla),
+                "team_priority": (team_priority),
             },
             success_code=201,
         )
