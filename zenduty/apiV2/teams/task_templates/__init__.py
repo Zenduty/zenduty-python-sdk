@@ -42,7 +42,7 @@ class TaskTemplateClient:
             },
             success_code=201,
         )
-        return TaskTemplate(**response)
+        return self.get_task_template_by_id(UUID(response["unique_id"]))
 
     def update_task_template(self, task_template: TaskTemplate) -> TaskTemplate:
         response = self._client.execute(
@@ -52,7 +52,7 @@ class TaskTemplateClient:
             request_payload=json.loads(task_template.to_json()),
             success_code=200,
         )
-        return TaskTemplate(**response)
+        return self.get_task_template_by_id(UUID(response["unique_id"]))
 
     def delete_task_template(self, task_template: TaskTemplate):
         self._client.execute(
