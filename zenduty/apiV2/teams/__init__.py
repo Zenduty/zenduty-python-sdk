@@ -19,9 +19,25 @@ class TeamsClient:
         self._client = client
 
     def get_schedule_client(self, team: Team) -> ScheduleClient:
+        """get schedule client for a team
+
+        Args:
+            team (Team): team for which schedule client is available
+
+        Returns:
+            ScheduleClient: client to interact with schedule objects
+        """        
         return ScheduleClient(self._client, team)
 
     def get_maintenance_client(self, team: Team) -> TeamMaintenanceClient:
+        """get maintenanace client for a team
+
+        Args:
+            team (Team): team for which maintenance client is required.
+
+        Returns:
+            TeamMaintenanceClient: team maintenance client which is required.
+        """        
         return TeamMaintenanceClient(self._client, team)
 
     def get_postmortem_client(self, team: Team) -> PostmortemClient:
@@ -58,7 +74,6 @@ class TeamsClient:
         return Team(**response)
 
     def list_teams(self) -> list[Team]:
-        # https://www.zenduty.com/api/account/teams/
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/",

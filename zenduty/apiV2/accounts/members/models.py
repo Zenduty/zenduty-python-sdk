@@ -5,7 +5,7 @@ from datetime import datetime
 from zenduty.apiV2.serializer import JsonSerializable
 
 
-class User(JsonSerializable):
+class User(JsonSerializable):    
     username: str
     first_name: str
     last_name: str
