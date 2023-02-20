@@ -1,9 +1,9 @@
 from uuid import UUID
 from datetime import datetime
 from typing import List, Optional
+from ...serializer import JsonSerializable
 
-
-class Service:
+class Service(JsonSerializable):
     unique_id: UUID
     service: UUID
 
@@ -12,7 +12,7 @@ class Service:
         self.service = service if type(service) is not str else UUID(service)
 
 
-class TeamMaintenance:
+class TeamMaintenance(JsonSerializable):
     unique_id: UUID
     start_time: datetime
     end_time: datetime
@@ -33,7 +33,7 @@ class TeamMaintenance:
         creation_date: datetime,
         name: str,
         time_zone: str,
-        repeat_until: Optional[datetime],
+        repeat_until: Optional[int],
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.start_time = (
@@ -47,7 +47,7 @@ class TeamMaintenance:
             else datetime.fromisoformat(end_time.replace("Z", "+00:00"))
         )
         self.repeat_interval = repeat_interval
-        self.services = services
+        self.services = services if type(services) is list[Service] else [Service(**svc) for svc in services]
         self.creation_date = (
             creation_date
             if type(creation_date) is datetime
@@ -55,8 +55,9 @@ class TeamMaintenance:
         )
         self.name = name
         self.time_zone = time_zone
-        self.repeat_until = (
-            repeat_interval
-            if type(repeat_interval) is datetime and repeat_until is not None
-            else datetime.fromisoformat(repeat_interval.replace("Z", "+00:00"))
-        )
+        if repeat_until is not None:
+            self.repeat_until = (
+                repeat_until
+                if type(repeat_until) is datetime or repeat_until is None
+                else datetime.fromisoformat(repeat_until.replace("Z", "+00:00"))
+            )

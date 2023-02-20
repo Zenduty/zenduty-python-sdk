@@ -29,10 +29,12 @@ class AccountMemberClient:
         return AccountMember(**response)
 
     def update_account_member(self, account_member: AccountMember) -> AccountMember:
+        payload = json.loads(account_member.to_json())
+        payload["user"].pop('email')
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
-            endpoint="/api/account/members/%s/" % account_member.unique_id,
-            request_payload=json.loads(account_member.to_json()),
+            endpoint="/api/account/members/%s/" % account_member.user.username,
+            request_payload=payload,
             success_code=200,
         )
         return AccountMember(**response)
@@ -55,7 +57,10 @@ class AccountMemberClient:
 
     def delete_account_member(self, account_member: AccountMember) -> None:
         self._client.execute(
-            method=ZendutyClientRequestMethod.DELETE,
-            endpoint="/api/account/members/%s/" % str(account_member.unique_id),
+            method=ZendutyClientRequestMethod.POST,
+            endpoint="/api/account/deleteuser/",
+            request_payload={
+                "username": account_member.user.username,
+            },
             success_code=204,
         )

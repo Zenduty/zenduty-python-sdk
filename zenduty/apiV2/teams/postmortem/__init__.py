@@ -32,7 +32,7 @@ class PostmortemClient:
         author: str,
         status: str,
         postmortem_data: str,
-        incidents: list[UUID],
+        incidents: list[str],
         title: str,
         download_status: int = 0,
         **kwargs
@@ -44,13 +44,13 @@ class PostmortemClient:
                 "author": author,
                 "status": status,
                 "postmortem_data": postmortem_data,
-                "incidents": [{"incident": str(i)} for i in incidents],
+                "incidents": [{"incident": i} for i in incidents],
                 "title": title,
                 "download_status": download_status,
             },
             success_code=201,
         )
-        return Postmortem(**response)
+        return self.get_postmortem_by_id(UUID(response["unique_id"]))
 
     def update_postmortem(self, postmortem: Postmortem) -> Postmortem:
         response = self._client.execute(
@@ -60,7 +60,7 @@ class PostmortemClient:
             request_payload=json.loads(postmortem.to_json()),
             success_code=200,
         )
-        return Postmortem(**response)
+        return self.get_postmortem_by_id(UUID(response["unique_id"]))
 
     def delete_postmortem(self, postmortem: Postmortem):
         self._client.execute(

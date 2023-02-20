@@ -12,7 +12,7 @@ class TeamMaintenanceClient:
         self._client = client
         self._team = team
 
-    def get_all_services(self) -> list[TeamMaintenance]:
+    def get_all_maintenance(self) -> list[TeamMaintenance]:
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/maintenance/" % str(self._team.unique_id),
@@ -37,7 +37,7 @@ class TeamMaintenanceClient:
         repeat_interval: int = 0,
         service_ids: list[UUID] = [],
         time_zone: str = "UTC",
-        repeat_until: Optional[datetime] = None,
+        repeat_until: Optional[int] = None,
         **kwargs
     ) -> TeamMaintenance:
         response = self._client.execute(
@@ -48,17 +48,17 @@ class TeamMaintenanceClient:
                 "start_time": start_time.isoformat(),
                 "end_time": end_time.isoformat(),
                 "repeat_interval": repeat_interval,
-                "service_ids": [{"service": str(svc_id)} for svc_id in service_ids],
+                "services": [{"service": svc_id} for svc_id in service_ids],
                 "time_zone": time_zone,
                 "repeat_until": repeat_until
-                if repeat_until is not None
+                if repeat_until is None
                 else repeat_until.isoformat(),
             },
             success_code=201,
         )
         return TeamMaintenance(**response)
 
-    def update_service(self, maintenance: TeamMaintenance) -> TeamMaintenance:
+    def update_maintenance(self, maintenance: TeamMaintenance) -> TeamMaintenance:
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/account/teams/%s/maintenance/%s/"
@@ -68,10 +68,10 @@ class TeamMaintenanceClient:
         )
         return TeamMaintenance(**response)
 
-    def delete_service(self, maintenance: TeamMaintenance) -> None:
+    def delete_maintenance(self, maintenance: TeamMaintenance) -> None:
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
-            endpoint="/api/account/teams/%s/services/%s/"
-            % (str(self._team.unique_id), str(service.unique_id)),
+            endpoint="/api/account/teams/%s/maintenance/%s/"
+            % (str(self._team.unique_id), str(maintenance.unique_id)),
             success_code=204,
         )

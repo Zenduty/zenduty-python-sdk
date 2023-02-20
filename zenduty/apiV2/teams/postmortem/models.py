@@ -1,9 +1,11 @@
 from uuid import UUID
-from typing import List, Union
+from typing import List, Optional, Union
 from datetime import datetime
 
+from zenduty.apiV2.serializer import JsonSerializable
 
-class IncidentIncident:
+
+class IncidentIncident(JsonSerializable):
     unique_id: str
     title: str
     incident_number: int
@@ -14,7 +16,7 @@ class IncidentIncident:
         self.incident_number = incident_number
 
 
-class IncidentElement:
+class IncidentElement(JsonSerializable):
     unique_id: UUID
     incident: IncidentIncident
 
@@ -29,7 +31,7 @@ class IncidentElement:
         )
 
 
-class Postmortem:
+class Postmortem(JsonSerializable):
     unique_id: UUID
     author: str
     status: str
@@ -38,8 +40,8 @@ class Postmortem:
     author_name: str
     title: str
     download_status: int
-    amazon_link: str
-    creation_date: datetime
+    amazon_link: Optional[str]
+    creation_date: Optional[datetime]
 
     # noinspection PyArgumentList
     def __init__(

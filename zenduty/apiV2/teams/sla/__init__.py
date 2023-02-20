@@ -37,7 +37,7 @@ class SLAClient:
     ) -> SLA:
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
-            endpoint="/api/account/teams/%s/schedules/" % str(self._team.unique_id),
+            endpoint="/api/account/teams/%s/sla/" % str(self._team.unique_id),
             request_payload={
                 "name": name,
                 "is_active": is_active,
@@ -47,9 +47,10 @@ class SLAClient:
             },
             success_code=201,
         )
+        print(response)
         return SLA(**response)
 
-    def update_schedule(self, sla: SLA) -> SLA:
+    def update_sla(self, sla: SLA) -> SLA:
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/account/teams/%s/sla/%s/"
@@ -59,7 +60,7 @@ class SLAClient:
         )
         return SLA(**response)
 
-    def delete_schedule(self, sla: SLA):
+    def delete_sla(self, sla: SLA):
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
             endpoint="/api/account/teams/%s/sla/%s/"

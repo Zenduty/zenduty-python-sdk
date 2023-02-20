@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from types import MappingProxyType
 from uuid import UUID
 
 
@@ -13,5 +14,8 @@ def serialize(o):
         return o.isoformat()
     elif type(o) is UUID:
         return str(o)
+    # elif isinstance(o, MappingProxyType):
+    #     print(o)
+    #     return o
     else:
         return o.__dict__
