@@ -19,3 +19,5 @@ share/python-wheels/
 MANIFEST
 .DS_Store
 zenduty/.DS_Store
+__pycache__/
+ *.pyc

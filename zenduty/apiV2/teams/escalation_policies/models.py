@@ -1,10 +1,10 @@
 from typing import Union
 from uuid import UUID
 import json
-from ...serializer import serialize
+from ...serializer import serialize, JsonSerializable
 
 
-class Target(object):
+class Target(JsonSerializable):
     target_type: int
     target_id: str
 
@@ -12,11 +12,11 @@ class Target(object):
         self.target_type = target_type
         self.target_id = target_id
 
-    def toJSON(self):
+    def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
 
 
-class Rule(object):
+class Rule(JsonSerializable):
     delay: int
     targets: list[Target]
     position: int
@@ -31,16 +31,18 @@ class Rule(object):
     ) -> None:
         self.delay = delay
         self.targets = (
-            targets if type(targets) is list[dict] else [Target(**l) for l in targets]
+            targets
+            if type(targets) is not list[dict]
+            else [Target(**l) for l in targets]
         )
         self.position = position
-        self.unique_id = unique_id
+        self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
 
-    def toJSON(self):
+    def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
 
 
-class EscalationPolicy(object):
+class EscalationPolicy(JsonSerializable):
     name: str
     summary: str
     description: str
@@ -66,12 +68,14 @@ class EscalationPolicy(object):
         self.name = name
         self.summary = summary
         self.description = description
-        self.rules = rules if type(rules) is list[dict] else [Rule(**l) for l in rules]
-        self.unique_id = unique_id
-        self.team = team
+        self.rules = (
+            rules if type(rules) is not list[dict] else [Rule(**l) for l in rules]
+        )
+        self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
+        self.team = team if type(team) is not str else UUID(team)
         self.repeat_policy = repeat_policy
         self.move_to_next = move_to_next
         self.global_ep = global_ep
 
-    def toJSON(self):
+    def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)

@@ -50,7 +50,7 @@ class EscalationPolicyClient:
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/account/teams/%s/escalation_policies/%s/"
             % (str(self._team.unique_id), str(esp.unique_id)),
-            request_payload=json.loads(esp.toJSON()),
+            request_payload=json.loads(esp.to_json()),
             success_code=200,
         )
         return EscalationPolicy(**response)

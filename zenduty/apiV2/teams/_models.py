@@ -2,10 +2,10 @@ from uuid import UUID
 from datetime import datetime
 from typing import Union
 import json
-from ..serializer import serialize
+from ..serializer import serialize, JsonSerializable
 
 
-class User(object):
+class User(JsonSerializable):
     username: str
     first_name: str
     last_name: str
@@ -19,11 +19,11 @@ class User(object):
         self.last_name = last_name
         self.email = email
 
-    def toJSON(self):
+    def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
 
 
-class Member(object):
+class Member(JsonSerializable):
     unique_id: UUID
     team: UUID
     user: User
@@ -44,12 +44,12 @@ class Member(object):
         self.joining_date = (
             joining_date
             if type(joining_date) is datetime
-            else datetime.fromisoformat(joining_date.replace("Z", "+05:30"))
+            else datetime.fromisoformat(joining_date.replace("Z", "+00:00"))
         )
         self.role = role
 
 
-class Role(object):
+class Role(JsonSerializable):
     unique_id: UUID
     team: UUID
     title: str
@@ -73,12 +73,12 @@ class Role(object):
         self.creation_date = (
             creation_date
             if type(creation_date) is datetime
-            else datetime.fromisoformat(creation_date.replace("Z", "+05:30"))
+            else datetime.fromisoformat(creation_date.replace("Z", "+00:00"))
         )
         self.rank = rank
 
 
-class Team(object):
+class Team(JsonSerializable):
     unique_id: UUID
     name: str
     account: UUID
@@ -106,7 +106,7 @@ class Team(object):
         self.creation_date = (
             creation_date
             if type(creation_date) is datetime
-            else datetime.fromisoformat(creation_date.replace("Z", "+05:30"))
+            else datetime.fromisoformat(creation_date.replace("Z", "+00:00"))
         )
         self.members = (
             members if type(members) is list[Member] else [Member(**m) for m in members]

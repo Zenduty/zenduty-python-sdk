@@ -2,10 +2,10 @@ from datetime import datetime
 from uuid import UUID
 from typing import Union
 import json
-from ...serializer import serialize
+from ...serializer import serialize, JsonSerializable
 
 
-class Restriction(object):
+class Restriction(JsonSerializable):
     duration: int
     start_day_of_week: int
     start_time_of_day: datetime
@@ -23,11 +23,11 @@ class Restriction(object):
         self.start_time_of_day = start_time_of_day
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
 
-    def toJSON(self):
+    def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
 
 
-class User(object):
+class User(JsonSerializable):
     user: str
     position: int
     unique_id: UUID
@@ -37,11 +37,11 @@ class User(object):
         self.position = position
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
 
-    def toJSON(self):
+    def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
 
 
-class Layer(object):
+class Layer(JsonSerializable):
     shift_length: int
     restrictions: list[Restriction]
     name: str
@@ -69,35 +69,37 @@ class Layer(object):
         self.shift_length = shift_length
         self.restrictions = (
             restrictions
-            if type(restrictions) is list[dict]
+            if type(restrictions) is not list[dict]
             else [Restriction(**r) for r in restrictions]
         )
         self.name = name
-        self.users = users if type(users) is list[dict] else [User(**r) for r in users]
+        self.users = (
+            users if type(users) is not list[dict] else [User(**r) for r in users]
+        )
         self.rotation_start_time = (
             rotation_start_time
             if type(rotation_start_time) is datetime
-            else datetime.fromisoformat(rotation_start_time.replace("Z", "+05:30"))
+            else datetime.fromisoformat(rotation_start_time.replace("Z", "+00:00"))
         )
         self.rotation_end_time = (
             rotation_end_time
             if type(rotation_end_time) is datetime
-            else datetime.fromisoformat(rotation_end_time.replace("Z", "+05:30"))
+            else datetime.fromisoformat(rotation_end_time.replace("Z", "+00:00"))
         )
         self.unique_id = unique_id
         self.last_edited = (
             last_edited
             if type(last_edited) is datetime or last_edited is None
-            else datetime.fromisoformat(last_edited.replace("Z", "+05:30"))
+            else datetime.fromisoformat(last_edited.replace("Z", "+00:00"))
         )
         self.restriction_type = restriction_type
         self.is_active = is_active
 
-    def toJSON(self):
+    def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
 
 
-class Override(object):
+class Override(JsonSerializable):
     name: str
     user: str
     start_time: datetime
@@ -117,20 +119,20 @@ class Override(object):
         self.start_time = (
             start_time
             if type(start_time) is datetime
-            else datetime.fromisoformat(start_time.replace("Z", "+05:30"))
+            else datetime.fromisoformat(start_time.replace("Z", "+00:00"))
         )
         self.end_time = (
             end_time
             if type(end_time) is datetime
-            else datetime.fromisoformat(end_time.replace("Z", "+05:30"))
+            else datetime.fromisoformat(end_time.replace("Z", "+00:00"))
         )
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
 
-    def toJSON(self):
+    def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
 
 
-class Schedule(object):
+class Schedule(JsonSerializable):
     name: str
     summary: str
     description: str
@@ -157,14 +159,14 @@ class Schedule(object):
         self.time_zone = time_zone
         self.team = team if type(team) is UUID else UUID(team)
         self.layers = (
-            layers if type(layers) is list[dict] else [Layer(**l) for l in layers]
+            layers if type(layers) is not list[dict] else [Layer(**l) for l in layers]
         )
         self.overrides = (
             overrides
-            if type(overrides) is list[dict]
+            if type(overrides) is not list[dict]
             else [Override(**over) for over in overrides]
         )
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
 
-    def toJSON(self):
+    def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)

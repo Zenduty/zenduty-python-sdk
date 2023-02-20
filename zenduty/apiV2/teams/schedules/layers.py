@@ -1,8 +1,10 @@
 from .models import Layer, User, Restriction
 from datetime import datetime, timedelta
 
+from ...serializer import JsonSerializable
 
-class LayersBuilder(object):
+
+class LayersBuilder(JsonSerializable):
     def __init__(self):
         self.layers = []
 

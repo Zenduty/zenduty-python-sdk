@@ -56,7 +56,7 @@ class ScheduleClient:
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/account/teams/%s/schedules/%s/"
             % (str(self._team.unique_id), str(schedule.unique_id)),
-            request_payload=json.loads(schedule.toJSON()),
+            request_payload=json.loads(schedule.to_json()),
             success_code=200,
         )
         return Schedule(**response)

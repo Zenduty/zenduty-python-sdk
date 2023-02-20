@@ -1,19 +1,52 @@
+from .maintenance import TeamMaintenanceClient
+from .oncall.models import OnCall
+from .postmortem import PostmortemClient
+from .priorities import PriorityClient
+from .roles import IncidentRole, IncidentRoleClient
+from .sla import SLAClient
+from .tags import TagClient
+from .task_templates import TaskTemplateClient
 from ..client import ZendutyClient, ZendutyClientRequestMethod
 from ._models import Team, Member
 from uuid import UUID
 from .schedules import ScheduleClient
 from .escalation_policies import EscalationPolicyClient
+from .services import ServiceClient
 
 
-class ZendutyTeamsClient:
+class TeamsClient:
     def __init__(self, client: ZendutyClient):
         self._client = client
 
     def get_schedule_client(self, team: Team) -> ScheduleClient:
         return ScheduleClient(self._client, team)
 
+    def get_maintenance_client(self, team: Team) -> TeamMaintenanceClient:
+        return TeamMaintenanceClient(self._client, team)
+
+    def get_postmortem_client(self, team: Team) -> PostmortemClient:
+        return PostmortemClient(self._client, team)
+
+    def get_priority_client(self, team: Team) -> PriorityClient:
+        return PriorityClient(self._client, team)
+
+    def get_incident_role_client(self, team: Team) -> IncidentRoleClient:
+        return IncidentRoleClient(self._client, team)
+
+    def get_sla_client(self, team: Team) -> SLAClient:
+        return SLAClient(self._client, team)
+
+    def get_tag_client(self, team: Team) -> TagClient:
+        return TagClient(self._client, team)
+
+    def get_task_template_client(self, team: Team) -> TaskTemplateClient:
+        return TaskTemplateClient(self._client, team)
+
     def get_escalation_policy_client(self, team: Team) -> EscalationPolicyClient:
         return EscalationPolicyClient(self._client, team)
+
+    def get_service_client(self, team: Team) -> ServiceClient:
+        return ServiceClient(self._client, team)
 
     def create_team(self, name: str) -> Team:
         response = self._client.execute(
@@ -110,8 +143,15 @@ class ZendutyTeamsClient:
             endpoint=f"/api/account/teams/{str(team.unique_id)}/permissions/",
             success_code=200,
         )
-        print(response)
         return response.get("account_permissions", [])
+
+    def get_all_oncall(self, team: Team) -> list[OnCall]:
+        response = self._client.execute(
+            method=ZendutyClientRequestMethod.GET,
+            endpoint=f"/api/account/teams/{str(team.unique_id)}/oncall/",
+            success_code=200,
+        )
+        return [OnCall(**oncall) for oncall in response]
 
     def update_team_permissions(self, team: Team, permissions: list[str]) -> list[str]:
         response = self._client.execute(
@@ -122,5 +162,4 @@ class ZendutyTeamsClient:
             },
             success_code=200,
         )
-        print(response)
         return response.get("account_permissions", [])
