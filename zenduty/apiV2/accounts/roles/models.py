@@ -11,7 +11,11 @@ class AccountRole(JsonSerializable):
     permissions: List[str]
 
     def __init__(
-        self, unique_id: UUID, name: str, description: str, permissions: List[str]
+        self,
+        unique_id: UUID,
+        name: str,
+        description: str,
+        permissions: List[str],
     ) -> None:
         self.unique_id = unique_id if isinstance(unique_id, UUID) else UUID(unique_id)
         self.name = name

@@ -7,6 +7,7 @@ from ..client import ZendutyClient, ZendutyClientRequestMethod
 from .models import Incident
 from ..events.models import Event
 
+
 class __IncidentItr__:
     def __init__(self, client: ZendutyClient, results: list, next: str, pos: int = 0):
         self._client = client
@@ -35,7 +36,6 @@ class __IncidentItr__:
         v = self.results[self.pos]
         self.pos += 1
         return Incident(**v)
-
 
 
 class IncidentClient:

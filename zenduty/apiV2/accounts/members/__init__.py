@@ -10,7 +10,12 @@ class AccountMemberClient:
         self._client = client
 
     def invite(
-        self, team_id: UUID, email: str, first_name: str, last_name: str, role: int
+        self,
+        team_id: UUID,
+        email: str,
+        first_name: str,
+        last_name: str,
+        role: int,
     ) -> AccountMember:
         """Invite users to the specified team
 
@@ -22,7 +27,7 @@ class AccountMemberClient:
             role (int): An integer that represents the Account Member object's role
         Returns:
             AccountMember: Returns an Account Member object.
-        """    
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/account/api_invite/",
@@ -47,9 +52,9 @@ class AccountMemberClient:
 
         Returns:
             AccountMember: return the updated account memmber information from server
-        """        
+        """
         payload = json.loads(account_member.to_json())
-        payload["user"].pop('email')
+        payload["user"].pop("email")
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/account/members/%s/" % account_member.user.username,
@@ -66,7 +71,7 @@ class AccountMemberClient:
 
         Returns:
             AccountMember: account member information object
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/members/%s/" % account_member_id,
@@ -79,7 +84,7 @@ class AccountMemberClient:
 
         Returns:
             list[AccountMember]: List of account members
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/members/",
@@ -88,11 +93,11 @@ class AccountMemberClient:
         return [AccountMember(**member) for member in response]
 
     def delete_account_member(self, account_member: AccountMember) -> None:
-        """delete a account member 
+        """delete a account member
 
         Args:
             account_member (AccountMember): account member object to delete
-        """        
+        """
         self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/account/deleteuser/",

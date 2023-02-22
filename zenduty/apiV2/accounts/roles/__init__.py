@@ -22,7 +22,7 @@ class AccountRoleClient:
 
         Returns:
             AccountRole: account role object
-        """    
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/account/customroles/",
@@ -43,7 +43,7 @@ class AccountRoleClient:
 
         Returns:
             AccountRole: account role object
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint=f"/api/account/customroles/{account_role_id}/",
@@ -56,7 +56,7 @@ class AccountRoleClient:
 
         Returns:
             list[AccountRole]: List of account roles
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/customroles/",
@@ -72,7 +72,7 @@ class AccountRoleClient:
 
         Returns:
             AccountRole: updated information about a account role
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/account/customroles/%s/" % str(account_role.unique_id),
@@ -86,7 +86,7 @@ class AccountRoleClient:
 
         Args:
             account_role (AccountRole): account role to be deleted
-        """        
+        """
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
             endpoint=f"/api/account/customroles/{str(account_role.unique_id)}/",

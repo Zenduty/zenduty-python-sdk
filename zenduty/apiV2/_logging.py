@@ -3,8 +3,8 @@ import logging
 
 
 class Logging:
-    """logging for internals
-    """    
+    """logging for internals"""
+
     def info(self, data: dict):
         msg = json.dumps(data)
         logging.info(msg)

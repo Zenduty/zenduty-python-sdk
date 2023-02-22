@@ -34,7 +34,6 @@ class __IncidentNoteItr__:
         return IncidentNote(**v)
 
 
-
 class IncidentNoteClient:
     def __init__(self, client: ZendutyClient, incident: Incident):
         self._incident = incident

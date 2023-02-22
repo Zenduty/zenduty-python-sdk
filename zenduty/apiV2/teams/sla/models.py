@@ -41,5 +41,9 @@ class SLA(JsonSerializable):
         self.acknowledge_time = acknowledge_time
         self.resolve_time = resolve_time
         self.team = team
-        self.creation_date = creation_date if isinstance(creation_date, datetime) or creation_date is None else datetime.fromisoformat(creation_date.replace("Z", "+00:00"))
+        self.creation_date = (
+            creation_date
+            if isinstance(creation_date, datetime) or creation_date is None
+            else datetime.fromisoformat(creation_date.replace("Z", "+00:00"))
+        )
         self.summary = summary

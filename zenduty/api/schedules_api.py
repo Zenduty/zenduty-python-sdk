@@ -25,7 +25,9 @@ class SchedulesApi(object):
         # "team":"d4a777db-5bce-419c-a725-420ebb505c54",
         # "layers":[]}
         return self.api_client.call_api(
-            "POST", "/api/account/teams/{}/schedules/".format(team_id), body=body
+            "POST",
+            "/api/account/teams/{}/schedules/".format(team_id),
+            body=body,
         )
 
     def get_schedule_by_id(self, team_id, schedule_id):
@@ -33,7 +35,8 @@ class SchedulesApi(object):
         # params str team_id: unique id of a team
         # params schedule_id: unique id of schedule
         return self.api_client.call_api(
-            "GET", "/api/account/teams/{}/schedules/{}/".format(team_id, schedule_id)
+            "GET",
+            "/api/account/teams/{}/schedules/{}/".format(team_id, schedule_id),
         )
 
     def update_schedule(self, team_id, schedule_id, body):
@@ -60,5 +63,6 @@ class SchedulesApi(object):
         # params str team_id:unique id of team
         # params str schedule_id: unique id of schedule
         return self.api_client.call_api(
-            "DELETE", "/api/account/teams/{}/schedules/{}/".format(team_id, schedule_id)
+            "DELETE",
+            "/api/account/teams/{}/schedules/{}/".format(team_id, schedule_id),
         )

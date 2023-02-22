@@ -22,5 +22,6 @@ class MembersApi(object):
         # params str team_id: unique id of a team
         # params str member_id: unique id of member to be deleted
         return self.api_client.call_api(
-            "DELETE", "/api/account/teams/{}/members/{}/".format(team_id, member_id)
+            "DELETE",
+            "/api/account/teams/{}/members/{}/".format(team_id, member_id),
         )

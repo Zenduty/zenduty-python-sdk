@@ -149,7 +149,7 @@ class ServiceObject(JsonSerializable):
         collation_time: int,
         collation: int,
         under_maintenance: bool,
-        team_name: Optional[str]
+        team_name: Optional[str],
     ) -> None:
         self.name = name
         self.creation_date = (
@@ -181,6 +181,7 @@ class ServiceObject(JsonSerializable):
         self.collation = collation
         self.under_maintenance = under_maintenance
         self.team_name = team_name
+
 
 class SlaObject(JsonSerializable):
     unique_id: UUID

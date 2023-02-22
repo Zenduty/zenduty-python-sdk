@@ -28,7 +28,9 @@ class ServicesApi(object):
         # "acknowledgement_timeout":1,
         # "auto_resolve_timeout":1}
         return self.api_client.call_api(
-            "POST", "/api/account/teams/{}/services/".format(team_id), body=body
+            "POST",
+            "/api/account/teams/{}/services/".format(team_id),
+            body=body,
         )
 
     def get_services_by_id(self, team_id, service_id):
@@ -36,7 +38,8 @@ class ServicesApi(object):
         # params str team_id: unique id of team
         # params str service_id: unique id of service
         return self.api_client.call_api(
-            "GET", "/api/account/teams/{}/services/{}/".format(team_id, service_id)
+            "GET",
+            "/api/account/teams/{}/services/{}/".format(team_id, service_id),
         )
 
     def update_service(self, team_id, service_id, body):
@@ -61,5 +64,6 @@ class ServicesApi(object):
         # params str team_id: unique id of team
         # params str service_id: unnique id of service
         return self.api_client.call_api(
-            "DELETE", "/api/account/teams/{}/services/{}/".format(team_id, service_id)
+            "DELETE",
+            "/api/account/teams/{}/services/{}/".format(team_id, service_id),
         )

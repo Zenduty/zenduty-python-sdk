@@ -61,7 +61,10 @@ class OnCall(JsonSerializable):
     users: List[User]
 
     def __init__(
-        self, escalation_policy: EscalationPolicy, team: Team, users: list[User]
+        self,
+        escalation_policy: EscalationPolicy,
+        team: Team,
+        users: list[User],
     ) -> None:
         self.escalation_policy = (
             escalation_policy

@@ -5,7 +5,7 @@ from datetime import datetime
 from zenduty.apiV2.serializer import JsonSerializable
 
 
-class User(JsonSerializable):    
+class User(JsonSerializable):
     username: str
     first_name: str
     last_name: str
@@ -38,7 +38,7 @@ class AccountMember(JsonSerializable):
         role: int,
         is_verified: bool,
         team: Optional[UUID] = None,
-        custom_role_id: Optional[str] = None
+        custom_role_id: Optional[str] = None,
     ) -> None:
         self.unique_id = unique_id if isinstance(unique_id, UUID) else unique_id
         self.time_zone = time_zone

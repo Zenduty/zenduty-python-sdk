@@ -26,7 +26,7 @@ class TeamsClient:
 
         Returns:
             ScheduleClient: client to interact with schedule objects
-        """        
+        """
         return ScheduleClient(self._client, team)
 
     def get_maintenance_client(self, team: Team) -> TeamMaintenanceClient:
@@ -37,7 +37,7 @@ class TeamsClient:
 
         Returns:
             TeamMaintenanceClient: team maintenance client which is required.
-        """        
+        """
         return TeamMaintenanceClient(self._client, team)
 
     def get_postmortem_client(self, team: Team) -> PostmortemClient:
