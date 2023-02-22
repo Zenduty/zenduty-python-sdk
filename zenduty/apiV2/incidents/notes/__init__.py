@@ -36,10 +36,21 @@ class __IncidentNoteItr__:
 
 class IncidentNoteClient:
     def __init__(self, client: ZendutyClient, incident: Incident):
+        """Constructor for IncidentNote
+
+        Args:
+            client (ZendutyClient): the zenduty client to connect to the Zenduty API
+            incident (Incident): incident object for which the incident note client is required.
+        """        
         self._incident = incident
         self._client = client
 
     def get_all_incident_notes(self) -> __IncidentNoteItr__:
+        """Get all incident notes
+
+        Returns:
+            __IncidentNoteItr__: Incident notes interator object.
+        """        
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/%s/note/" % self._incident.incident_number,
@@ -49,6 +60,14 @@ class IncidentNoteClient:
         return __IncidentNoteItr__(self._client, response["results"], response["next"])
 
     def get_incident_note_by_id(self, incident_note_id: str) -> IncidentNote:
+        """Get incident note by id of the note
+
+        Args:
+            incident_note_id (str): The id of the incident note
+
+        Returns:
+            IncidentNote: The incident note object
+        """        
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/%d/note/%s/"
@@ -61,6 +80,14 @@ class IncidentNoteClient:
         self,
         note: str,
     ) -> IncidentNote:
+        """create a incident note
+
+        Args:
+            note (str): the note string
+
+        Returns:
+            IncidentNote: The created incident note object.
+        """    
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/incidents/%d/note/" % self._incident.incident_number,
@@ -72,6 +99,14 @@ class IncidentNoteClient:
         return IncidentNote(**response)
 
     def update_incident_note(self, note: IncidentNote) -> IncidentNote:
+        """Update a incident note object with given changes identified by unique identifier
+
+        Args:
+            note (IncidentNote): the incident note object to update
+
+        Returns:
+            IncidentNote: IncidentNote object
+        """        
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/incidents/%d/note/%s/"
@@ -82,6 +117,11 @@ class IncidentNoteClient:
         return IncidentNote(**response)
 
     def delete_incident_note(self, note: IncidentNote) -> None:
+        """Delete a incident note object
+
+        Args:
+            note (IncidentNote): incident note object to delete
+        """        
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
             endpoint="/api/incidents/%d/note/%s/"

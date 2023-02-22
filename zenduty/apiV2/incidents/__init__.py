@@ -9,6 +9,8 @@ from ..events.models import Event
 
 
 class __IncidentItr__:
+    """The incident list iterator implementation for paginated incidents
+    """    
     def __init__(self, client: ZendutyClient, results: list, next: str, pos: int = 0):
         self._client = client
         self.results = results
@@ -40,15 +42,42 @@ class __IncidentItr__:
 
 class IncidentClient:
     def __init__(self, client: ZendutyClient):
+        """The constructor for an incident client
+
+        Args:
+            client (ZendutyClient): The zenduty client to connect to Zenduty APIs
+        """        
         self._client = client
 
     def get_note_client(self, incident: Incident) -> IncidentNoteClient:
+        """Reutrns the Incident Notes client
+
+        Args:
+            incident (Incident): the incident object for which the notes client has to be fetched
+
+        Returns:
+            IncidentNoteClient: The IncidentNoteClient object is returned which can be used to perform various operations on incident notes.
+        """        
         return IncidentNoteClient(self._client, incident)
 
     def get_tags_client(self, incident: Incident) -> IncidentTagClient:
+        """Reutrns the Incident Tags client
+
+        Args:
+            incident (Incident): the incident object for which the tags client has to be fetched
+
+        Returns:
+            IncidentTagClient: The IncidentTagClient object is returned which can be used to perform various operations on incident tags.
+        """        
+
         return IncidentTagClient(self._client, incident)
 
     def get_all_incidents(self) -> __IncidentItr__:
+        """Returns a iterator for all the incidents
+
+        Returns:
+            __IncidentItr__: the iterator for incidents list
+        """        
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/",
@@ -57,6 +86,14 @@ class IncidentClient:
         return __IncidentItr__(self._client, response["results"], response["next"])
 
     def get_incident_by_incident_number(self, incident_number: int) -> Incident:
+        """Return a Incident by incident number
+
+        Args:
+            incident_number (int): the incident number for which to retrieve the incident
+
+        Returns:
+            Incident: The returned Incident object
+        """        
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/%d/" % incident_number,
@@ -94,6 +131,14 @@ class IncidentClient:
         return Incident(**response)
 
     def update_incident(self, incident: Incident) -> Incident:
+        """Updates the incident object attributes with the specified incident number
+
+        Args:
+            incident (Incident): Incident object with updated fields
+
+        Returns:
+            Incident: The updated incident object
+        """        
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/incidents/%d/" % incident.incident_number,
@@ -103,6 +148,14 @@ class IncidentClient:
         return Incident(**response)
 
     def get_alerts_for_incident(self, incident_number: int) -> list[Event]:
+        """Get alerts for an incident
+
+        Args:
+            incident_number (int): The incident number for which to find the incident
+
+        Returns:
+            list[Event]: _description_
+        """        
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/%d/alerts/" % incident_number,
