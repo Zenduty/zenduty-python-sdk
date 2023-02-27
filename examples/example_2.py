@@ -9,7 +9,9 @@ from zenduty.apiV2.incidents import IncidentClient
 cred = ZendutyCredential("f3ab5c762c914dacca2c0c530b260fdf9fff0cc7")
 client = ZendutyClient(credential=cred, use_https=True)
 
+# we create a incident client
 incident_client = IncidentClient(client)
+# we create a a incident for the team and other specifics from example 1.
 incident = incident_client.create_incident(
     title="Incident-0001",
     summary="New summary",
@@ -23,7 +25,9 @@ incident = incident_client.create_incident(
 print("Created incident...")
 print(incident)
 
+# we get the incident note client for the incident
 note_client = incident_client.get_note_client(incident)
+# we create a array of incident notes to create
 notes = [
     "Incident Note - 001",
     "Incident Note - 002",
@@ -31,7 +35,9 @@ notes = [
     "Incident Note - 004",
     "Incident Note - 005",
 ]
+
 for note in notes:
+    # we create a incident note for all the notes to create
     _note = note_client.create_incident_note(
         note=note
     )

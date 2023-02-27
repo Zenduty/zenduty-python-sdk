@@ -1,5 +1,14 @@
 ## Example 1
 
+The following example shows how to:
+- Create a team
+- Invite a user to the team
+- Create a escalation policy
+- Create a SLA
+- Create a Task Teamplate
+- Create a Team Priority
+- Create a Service
+
 ### Code:
 
 ```python
@@ -11,16 +20,23 @@ from zenduty.apiV2.teams.escalation_policies.rules import RuleBuilder
 from zenduty.apiV2.teams.escalation_policies.targets import TargetBuilder
 from zenduty.apiV2.client import ZendutyClient
 
-cred = ZendutyCredential("f3ab5c762c914dacca2c0c530b260fdf9fff0cc7")
-client = ZendutyClient(credential=cred, use_https=True)
+cred = ZendutyCredential("f3ab5c762c914dacca2c0c530b260fdf9fff0cc7") # Default credentials to ZENDUTY_API_KEY env variable if not provided. (use export ZENDUTY_API_KEY="<YOUR KEY>")
+client = ZendutyClient(credential=cred, use_https=True) # defaults to default service endpoint zenduty.com
+
+# We pass a team client with default client.
 teams_client = TeamsClient(client=client)
 
+# We create a team
 team = teams_client.create_team(name="Test Team 3")
 print("Created team...")
+# we print a pretty json for the team
 print(team)
 
 
+# We create a member client.
 member_client = AccountMemberClient(client=client)
+
+# we invite a member to the created team.
 member = member_client.invite(
     team_id=team.unique_id,
     email="john.doe.1@zenduty.com",
@@ -31,7 +47,9 @@ member = member_client.invite(
 print("Created member...")
 print(member)
 
+# we get the escalation policy client for the specific team.
 esp_client_for_team = teams_client.get_escalation_policy_client(team)
+# we create a escalation policy for the team
 esp = esp_client_for_team.create_esp(
     name="ESP-001",
     summary="Summary for ESP001",
@@ -49,7 +67,10 @@ esp = esp_client_for_team.create_esp(
 print("Created Escalation Policy...")
 print(esp)
 
+
+# we get the SLA client for the specific team.
 sla_client_for_team = teams_client.get_sla_client(team)
+# we create a SLA for the team
 sla = sla_client_for_team.create_sla(
     name="SLA-001",
     is_active=True,
@@ -59,8 +80,9 @@ sla = sla_client_for_team.create_sla(
 print("Created SLA...")
 print(sla)
 
-
+# we get the Task Template client for the specific team.
 task_template_client_for_team = teams_client.get_task_template_client(team)
+# we create a Task Teamplate for the team
 tt = task_template_client_for_team.create_task_template(
     name="Task-001",
     summary="Task template"
@@ -68,7 +90,9 @@ tt = task_template_client_for_team.create_task_template(
 print("Created task template...")
 print(tt)
 
+# we get the priority client for the specific team.
 priority_client_for_team = teams_client.get_priority_client(team)
+# we create a Priority for the team
 priority = priority_client_for_team.create_priority(
     name="Priority-001",
     color="red",
@@ -77,8 +101,9 @@ priority = priority_client_for_team.create_priority(
 print("Created team priority...")
 print(priority)
 
-
+# we get the service client for the specific team.
 svc_client_for_team = teams_client.get_service_client(team)
+# we create a Service for the team
 svc = svc_client_for_team.create_service(
     acknowledgement_timeout=0,
     name="SVC-001",
@@ -94,10 +119,9 @@ svc = svc_client_for_team.create_service(
     )
 
 print("Created service...")
+# we pretty print the service created
 print(svc)
-
 ```
-
 #### Output:
 
 ```bash
@@ -225,8 +249,14 @@ Created service...
 
 ## Example 2
 
+In a continuation of the above example.
+
+The following example shows how to:
+- Create an Incident
+- Create notes for the incident.
+
 ### Code:
-```python3
+```python
 
 
 from uuid import UUID
@@ -238,7 +268,9 @@ from zenduty.apiV2.incidents import IncidentClient
 cred = ZendutyCredential("f3ab5c762c914dacca2c0c530b260fdf9fff0cc7")
 client = ZendutyClient(credential=cred, use_https=True)
 
+# we create a incident client
 incident_client = IncidentClient(client)
+# we create a a incident for the team and other specifics from example 1.
 incident = incident_client.create_incident(
     title="Incident-0001",
     summary="New summary",
@@ -252,7 +284,9 @@ incident = incident_client.create_incident(
 print("Created incident...")
 print(incident)
 
+# we get the incident note client for the incident
 note_client = incident_client.get_note_client(incident)
+# we create a array of incident notes to create
 notes = [
     "Incident Note - 001",
     "Incident Note - 002",
@@ -260,7 +294,9 @@ notes = [
     "Incident Note - 004",
     "Incident Note - 005",
 ]
+
 for note in notes:
+    # we create a incident note for all the notes to create
     _note = note_client.create_incident_note(
         note=note
     )
@@ -269,7 +305,6 @@ for note in notes:
 
 
 ```
-
 ### Output:
 
 ```bash
