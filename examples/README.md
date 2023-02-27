@@ -2,7 +2,7 @@
 
 ### Code:
 
-```python3
+```python
 from datetime import timedelta
 from zenduty.apiV2.teams import TeamsClient
 from zenduty.apiV2.accounts.members import AccountMemberClient
@@ -220,4 +220,164 @@ Created service...
     "unique_id": "6b393d6a-dc4d-4ba0-80ac-11c19ee76f9a"
 }
 % 
+```
+
+
+## Example 2
+
+### Code:
+```python3
+
+
+from uuid import UUID
+from zenduty.apiV2.authentication.zenduty_credential import ZendutyCredential
+from zenduty.apiV2.client import ZendutyClient
+from zenduty.apiV2.incidents import IncidentClient
+
+
+cred = ZendutyCredential("f3ab5c762c914dacca2c0c530b260fdf9fff0cc7")
+client = ZendutyClient(credential=cred, use_https=True)
+
+incident_client = IncidentClient(client)
+incident = incident_client.create_incident(
+    title="Incident-0001",
+    summary="New summary",
+    assigned_to="0966ead6-39c7-4c6e-bba7-5",
+    escalation_policy=UUID("05cafff6-5183-471c-8870-335df3edc779"),
+    service=UUID("6b393d6a-dc4d-4ba0-80ac-11c19ee76f9a"),
+    sla=UUID("c228c696-e675-407d-928e-287e9e1306e2"),
+    status=1,
+    team_priority=UUID("deb7c33f-de64-43e6-b8d8-c4a610442624"),
+)
+print("Created incident...")
+print(incident)
+
+note_client = incident_client.get_note_client(incident)
+notes = [
+    "Incident Note - 001",
+    "Incident Note - 002",
+    "Incident Note - 003",
+    "Incident Note - 004",
+    "Incident Note - 005",
+]
+for note in notes:
+    _note = note_client.create_incident_note(
+        note=note
+    )
+    print("Note created...")
+    print(_note)
+
+
+```
+
+### Output:
+
+```bash
+mayank@ATSs-MacBook-Pro zenduty-python-sdk % python3 client.py 
+Created incident...
+{
+    "acknowledged_date": null,
+    "assigned_to": "0966ead6-39c7-4c6e-bba7-5",
+    "assigned_to_name": "John doe",
+    "context_window_end": null,
+    "context_window_start": null,
+    "creation_date": "2023-02-27T09:03:53.760264+00:00",
+    "escalation_policy": "05cafff6-5183-471c-8870-335df3edc779",
+    "escalation_policy_object": {
+        "name": "ESP-001",
+        "unique_id": "05cafff6-5183-471c-8870-335df3edc779"
+    },
+    "incident_key": "chvXpTzNdotyMNfyGXoBeK",
+    "incident_number": 5803,
+    "merged_with": null,
+    "resolved_date": null,
+    "service": "6b393d6a-dc4d-4ba0-80ac-11c19ee76f9a",
+    "service_object": {
+        "acknowledgement_timeout": 0,
+        "auto_resolve_timeout": 0,
+        "collation": 0,
+        "collation_time": 0,
+        "created_by": "35b1ff9f-99e5-4e1e-8d73-d",
+        "creation_date": "2023-02-27T08:40:57.136443+00:00",
+        "description": "Description for SVC-001",
+        "escalation_policy": "05cafff6-5183-471c-8870-335df3edc779",
+        "name": "SVC-001",
+        "sla": "c228c696-e675-407d-928e-287e9e1306e2",
+        "status": 1,
+        "summary": "Summary for SVC-001",
+        "task_template": "2b0676a3-694c-4f6b-ace5-d188cb860f9a",
+        "team": "49580d9f-9117-4c28-ae6c-cd893711302b",
+        "team_name": "Test Team 3",
+        "team_priority": "deb7c33f-de64-43e6-b8d8-c4a610442624",
+        "under_maintenance": false,
+        "unique_id": "6b393d6a-dc4d-4ba0-80ac-11c19ee76f9a"
+    },
+    "sla": "c228c696-e675-407d-928e-287e9e1306e2",
+    "sla_object": {
+        "acknowledge_time": 10,
+        "creation_date": "2023-02-27T08:40:50.051330+00:00",
+        "is_active": true,
+        "name": "SLA-001",
+        "resolve_time": 10,
+        "unique_id": "c228c696-e675-407d-928e-287e9e1306e2"
+    },
+    "status": 1,
+    "summary": "New summary",
+    "tags": [],
+    "team_priority": "deb7c33f-de64-43e6-b8d8-c4a610442624",
+    "team_priority_object": {
+        "color": "red",
+        "description": "Description for priority-001",
+        "name": "Priority-001",
+        "unique_id": "deb7c33f-de64-43e6-b8d8-c4a610442624"
+    },
+    "title": "Incident-0001",
+    "unique_id": "nW4FvNgtooBszwSTSjaX2A",
+    "urgency": 1
+}
+Note created...
+{
+    "creation_date": "2023-02-27T09:03:55.103231+00:00",
+    "incident": 5803,
+    "note": "Incident Note - 001",
+    "unique_id": "kjtupist6nspAYkugWQt8c",
+    "user": "35b1ff9f-99e5-4e1e-8d73-d",
+    "user_name": "Shyam Patel"
+}
+Note created...
+{
+    "creation_date": "2023-02-27T09:03:59.497570+00:00",
+    "incident": 5803,
+    "note": "Incident Note - 002",
+    "unique_id": "Q43fQ7UQQgVysPjVqkSG2N",
+    "user": "35b1ff9f-99e5-4e1e-8d73-d",
+    "user_name": "Shyam Patel"
+}
+Note created...
+{
+    "creation_date": "2023-02-27T09:04:00.918126+00:00",
+    "incident": 5803,
+    "note": "Incident Note - 003",
+    "unique_id": "djrzYC87TTsimHcuNibrzB",
+    "user": "35b1ff9f-99e5-4e1e-8d73-d",
+    "user_name": "Shyam Patel"
+}
+Note created...
+{
+    "creation_date": "2023-02-27T09:04:01.914746+00:00",
+    "incident": 5803,
+    "note": "Incident Note - 004",
+    "unique_id": "x6z7kqgd3zbGgVtjdp8Uc8",
+    "user": "35b1ff9f-99e5-4e1e-8d73-d",
+    "user_name": "Shyam Patel"
+}
+Note created...
+{
+    "creation_date": "2023-02-27T09:04:02.927280+00:00",
+    "incident": 5803,
+    "note": "Incident Note - 005",
+    "unique_id": "8o9pCn85zyGqG533e9esgm",
+    "user": "35b1ff9f-99e5-4e1e-8d73-d",
+    "user_name": "Shyam Patel"
+}
 ```
