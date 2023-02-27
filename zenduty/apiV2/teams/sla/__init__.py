@@ -71,7 +71,6 @@ class SLAClient:
             },
             success_code=201,
         )
-        print(response)
         return SLA(**response)
 
     def update_sla(self, sla: SLA) -> SLA:
