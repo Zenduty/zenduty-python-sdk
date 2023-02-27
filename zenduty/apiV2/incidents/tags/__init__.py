@@ -13,7 +13,7 @@ class IncidentTagClient:
         Args:
             client (ZendutyClient): The zenduty client to use
             incident (Incident): incident object on which the operation is to be performed
-        """        
+        """
         self._incident = incident
         self._client = client
 
@@ -22,7 +22,7 @@ class IncidentTagClient:
 
         Returns:
             list[Tag]: List of all tags on the incident
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/%s/tags/" % self._incident.incident_number,
@@ -38,7 +38,7 @@ class IncidentTagClient:
 
         Returns:
             Tag: The Tag object for the given tag identifier
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/%d/tags/%s/"
@@ -58,7 +58,7 @@ class IncidentTagClient:
 
         Returns:
             Tag: The created tag object
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/incidents/%d/tags/" % self._incident.incident_number,
@@ -84,7 +84,7 @@ class IncidentTagClient:
 
         Args:
             tag (Tag): The tag object to be deleted
-        """        
+        """
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
             endpoint="/api/incidents/%d/tags/%s/"

@@ -48,7 +48,7 @@ class TeamsClient:
 
         Returns:
             PostmortemClient: postmortem client
-        """        
+        """
         return PostmortemClient(self._client, team)
 
     def get_priority_client(self, team: Team) -> PriorityClient:
@@ -59,7 +59,7 @@ class TeamsClient:
 
         Returns:
             PriorityClient: priority client
-        """        
+        """
         return PriorityClient(self._client, team)
 
     def get_incident_role_client(self, team: Team) -> IncidentRoleClient:
@@ -70,7 +70,7 @@ class TeamsClient:
 
         Returns:
             IncidentRoleClient: incident role client object for the team.
-        """        
+        """
         return IncidentRoleClient(self._client, team)
 
     def get_sla_client(self, team: Team) -> SLAClient:
@@ -81,7 +81,7 @@ class TeamsClient:
 
         Returns:
             SLAClient: The sla client object
-        """        
+        """
         return SLAClient(self._client, team)
 
     def get_tag_client(self, team: Team) -> TagClient:
@@ -103,7 +103,7 @@ class TeamsClient:
 
         Returns:
             TaskTemplateClient: the task template client object
-        """        
+        """
         return TaskTemplateClient(self._client, team)
 
     def get_escalation_policy_client(self, team: Team) -> EscalationPolicyClient:
@@ -114,7 +114,7 @@ class TeamsClient:
 
         Returns:
             EscalationPolicyClient: the escalation policy client
-        """        
+        """
         return EscalationPolicyClient(self._client, team)
 
     def get_service_client(self, team: Team) -> ServiceClient:
@@ -125,7 +125,7 @@ class TeamsClient:
 
         Returns:
             ServiceClient: the service client
-        """        
+        """
         return ServiceClient(self._client, team)
 
     def create_team(self, name: str) -> Team:
@@ -136,7 +136,7 @@ class TeamsClient:
 
         Returns:
             Team: The created team object
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/account/teams/",
@@ -150,7 +150,7 @@ class TeamsClient:
 
         Returns:
             list[Team]: List of all the teams
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/",
@@ -166,7 +166,7 @@ class TeamsClient:
 
         Returns:
             Team: The team object required.
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint=f"/api/account/teams/{str(team_id)}/",
@@ -182,7 +182,7 @@ class TeamsClient:
 
         Returns:
             Team: The updated teams object
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint=f"/api/account/teams/{str(team.unique_id)}/",
@@ -198,7 +198,7 @@ class TeamsClient:
 
         Args:
             team (Team): The team object that has to be deleted.
-        """        
+        """
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
             endpoint=f"/api/account/teams/{str(team.unique_id)}/",
@@ -214,7 +214,7 @@ class TeamsClient:
 
         Returns:
             Member: Member object.
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/members/%s/"
@@ -233,7 +233,7 @@ class TeamsClient:
 
         Returns:
             Member: The member object.
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PATCH,
             endpoint=f"/api/account/teams/{str(team.unique_id)}/members/{str(member_id)}/",
@@ -253,7 +253,7 @@ class TeamsClient:
 
         Returns:
             Member: The created memeber.
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint=f"/api/account/teams/%s/members/" % str(team.unique_id),
@@ -268,7 +268,7 @@ class TeamsClient:
         Args:
             team (Team): Team to which a team member has to be removed from
             member_id (UUID): member id for the team member who has to be removed
-        """        
+        """
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
             endpoint="/api/account/teams/%s/members/%s/"
@@ -284,7 +284,7 @@ class TeamsClient:
 
         Returns:
             list[Member]: List of members
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint=f"/api/account/teams/{str(team.unique_id)}/members/",
@@ -300,7 +300,7 @@ class TeamsClient:
 
         Returns:
             list[str]: List of permissions
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint=f"/api/account/teams/{str(team.unique_id)}/permissions/",
@@ -316,7 +316,7 @@ class TeamsClient:
 
         Returns:
             list[OnCall]: List of OnCall objects.
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint=f"/api/account/teams/{str(team.unique_id)}/oncall/",
@@ -333,7 +333,7 @@ class TeamsClient:
 
         Returns:
             list[str]: List of permissions
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint=f"/api/account/teams/{str(team.unique_id)}/permissions/",

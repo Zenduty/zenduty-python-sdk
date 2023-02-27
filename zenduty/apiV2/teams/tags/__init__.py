@@ -11,6 +11,11 @@ class TagClient:
         self._team = team
 
     def get_all_tags(self) -> list[Tag]:
+        """Get all the tags
+
+        Returns:
+            list[Tag]: List of tags
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/tags/" % str(self._team.unique_id),
@@ -19,6 +24,14 @@ class TagClient:
         return [Tag(**r) for r in response]
 
     def get_tag_by_id(self, tags_id: UUID) -> Tag:
+        """Get a tag by ID
+
+        Args:
+            tags_id (UUID): tag id for which to fetch tag
+
+        Returns:
+            Tag: Tag object
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/tags/%s/"
@@ -28,6 +41,15 @@ class TagClient:
         return Tag(**response)
 
     def create_tag(self, name: str, color: str, **kwargs) -> Tag:
+        """Create a tag object
+
+        Args:
+            name (str): Name of the tag
+            color (str): color of the tag
+
+        Returns:
+            Tag: Tag object
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/account/teams/%s/tags/" % str(self._team.unique_id),
@@ -39,7 +61,15 @@ class TagClient:
         )
         return Tag(**response)
 
-    def update_tags(self, tag: Tag) -> Tag:
+    def update_tag(self, tag: Tag) -> Tag:
+        """Update a tag
+
+        Args:
+            tag (Tag): tag to be updated
+
+        Returns:
+            Tag: _description_
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/account/teams/%s/tags/%s/"
@@ -49,7 +79,12 @@ class TagClient:
         )
         return Tag(**response)
 
-    def delete_tags(self, tag: Tag):
+    def delete_tag(self, tag: Tag):
+        """Delete a tag
+
+        Args:
+            tag (Tag): Tag object to be deleted
+        """
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
             endpoint="/api/account/teams/%s/tags/%s/"

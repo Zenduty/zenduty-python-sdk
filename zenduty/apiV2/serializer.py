@@ -6,8 +6,10 @@ from uuid import UUID
 class JsonSerializable(object):
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
+
     def __repr__(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
+
     def __str__(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
 

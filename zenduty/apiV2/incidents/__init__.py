@@ -9,8 +9,8 @@ from ..events.models import Event
 
 
 class __IncidentItr__:
-    """The incident list iterator implementation for paginated incidents
-    """    
+    """The incident list iterator implementation for paginated incidents"""
+
     def __init__(self, client: ZendutyClient, results: list, next: str, pos: int = 0):
         self._client = client
         self.results = results
@@ -46,7 +46,7 @@ class IncidentClient:
 
         Args:
             client (ZendutyClient): The zenduty client to connect to Zenduty APIs
-        """        
+        """
         self._client = client
 
     def get_note_client(self, incident: Incident) -> IncidentNoteClient:
@@ -57,7 +57,7 @@ class IncidentClient:
 
         Returns:
             IncidentNoteClient: The IncidentNoteClient object is returned which can be used to perform various operations on incident notes.
-        """        
+        """
         return IncidentNoteClient(self._client, incident)
 
     def get_tags_client(self, incident: Incident) -> IncidentTagClient:
@@ -68,7 +68,7 @@ class IncidentClient:
 
         Returns:
             IncidentTagClient: The IncidentTagClient object is returned which can be used to perform various operations on incident tags.
-        """        
+        """
 
         return IncidentTagClient(self._client, incident)
 
@@ -77,7 +77,7 @@ class IncidentClient:
 
         Returns:
             __IncidentItr__: the iterator for incidents list
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/",
@@ -93,7 +93,7 @@ class IncidentClient:
 
         Returns:
             Incident: The returned Incident object
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/%d/" % incident_number,
@@ -138,7 +138,7 @@ class IncidentClient:
 
         Returns:
             Incident: The updated incident object
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/incidents/%d/" % incident.incident_number,
@@ -155,7 +155,7 @@ class IncidentClient:
 
         Returns:
             list[Event]: _description_
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/%d/alerts/" % incident_number,

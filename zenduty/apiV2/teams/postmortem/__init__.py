@@ -11,6 +11,11 @@ class PostmortemClient:
         self._team = team
 
     def get_all_postmortem(self) -> list[Postmortem]:
+        """Get a list of all postmortem
+
+        Returns:
+            list[Postmortem]: List of postmortems
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/postmortem/" % str(self._team.unique_id),
@@ -19,6 +24,14 @@ class PostmortemClient:
         return [Postmortem(**r) for r in response]
 
     def get_postmortem_by_id(self, postmortem_id: UUID) -> Postmortem:
+        """Get a postmortem by ID
+
+        Args:
+            postmortem_id (UUID): Postmoterm ID to fetch
+
+        Returns:
+            Postmortem: Postmoterm object
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/postmortem/%s/"
@@ -37,6 +50,19 @@ class PostmortemClient:
         download_status: int = 0,
         **kwargs
     ) -> Postmortem:
+        """Create a postmortem
+
+        Args:
+            author (str): A system-generated string that represents the User object's username
+            status (str): A string that represents the Postmortem object's status
+            postmortem_data (str): A string that represents the Postmortem object's postmortem_data
+            incidents (list[str]): An array of Postmortem Incident Unique IDs
+            title (str): A string that represents the Postmortem object's title
+            download_status (int, optional): An integer that represents the Postmortem object's download_status. 1 is uninitiated, 2 is initiated, 3 is finished and 4 is error. Defaults to 0.
+
+        Returns:
+            Postmortem: Created Postmotem object
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/account/teams/%s/postmortem/" % str(self._team.unique_id),
@@ -53,6 +79,14 @@ class PostmortemClient:
         return self.get_postmortem_by_id(UUID(response["unique_id"]))
 
     def update_postmortem(self, postmortem: Postmortem) -> Postmortem:
+        """Update a postmortem object passed
+
+        Args:
+            postmortem (Postmortem): Postmortem object to update
+
+        Returns:
+            Postmortem: Created postmortem object.
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/account/teams/%s/postmortem/%s/"
@@ -63,6 +97,11 @@ class PostmortemClient:
         return self.get_postmortem_by_id(UUID(response["unique_id"]))
 
     def delete_postmortem(self, postmortem: Postmortem):
+        """Delete a postmotem object
+
+        Args:
+            postmortem (Postmortem): postmotem to delete
+        """
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
             endpoint="/api/account/teams/%s/postmortem/%s/"

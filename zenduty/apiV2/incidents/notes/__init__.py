@@ -41,7 +41,7 @@ class IncidentNoteClient:
         Args:
             client (ZendutyClient): the zenduty client to connect to the Zenduty API
             incident (Incident): incident object for which the incident note client is required.
-        """        
+        """
         self._incident = incident
         self._client = client
 
@@ -50,7 +50,7 @@ class IncidentNoteClient:
 
         Returns:
             __IncidentNoteItr__: Incident notes interator object.
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/%s/note/" % self._incident.incident_number,
@@ -67,7 +67,7 @@ class IncidentNoteClient:
 
         Returns:
             IncidentNote: The incident note object
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/incidents/%d/note/%s/"
@@ -87,7 +87,7 @@ class IncidentNoteClient:
 
         Returns:
             IncidentNote: The created incident note object.
-        """    
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/incidents/%d/note/" % self._incident.incident_number,
@@ -106,7 +106,7 @@ class IncidentNoteClient:
 
         Returns:
             IncidentNote: IncidentNote object
-        """        
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/incidents/%d/note/%s/"
@@ -121,7 +121,7 @@ class IncidentNoteClient:
 
         Args:
             note (IncidentNote): incident note object to delete
-        """        
+        """
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
             endpoint="/api/incidents/%d/note/%s/"

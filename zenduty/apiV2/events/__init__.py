@@ -9,7 +9,7 @@ class EventClient:
 
         Args:
             client (ZendutyClient): The ZendutyClient to connect to the APIs
-        """        
+        """
         self._client = client
 
     def get_router_client(self) -> RouterClient:
@@ -17,7 +17,7 @@ class EventClient:
 
         Returns:
             RouterClient: The event router client
-        """        
+        """
         return RouterClient(self._client)
 
     def create_event(
@@ -39,7 +39,7 @@ class EventClient:
 
         Returns:
             Event: The created event object
-        """    
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/events/%s/" % integration_key,

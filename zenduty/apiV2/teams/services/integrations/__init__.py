@@ -44,6 +44,11 @@ class IntegrationClient:
         self._svc = svc
 
     def get_all_integrations(self) -> list[Integration]:
+        """Get all the integration
+
+        Returns:
+            list[Integration]: List of integrations
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/services/%s/integrations/"
@@ -53,6 +58,14 @@ class IntegrationClient:
         return [Integration(**r) for r in response]
 
     def get_intg_by_id(self, intg: UUID) -> Integration:
+        """Get a integration by ID.
+
+        Args:
+            intg (UUID): Integration ID.
+
+        Returns:
+            Integration: Integration Object
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/services/%s/integrations/%s/"
@@ -61,7 +74,16 @@ class IntegrationClient:
         )
         return Integration(**response)
 
-    def get_intg_alerts_iter(self, intg: Integration) -> list[IntegrationAlert]:
+    def get_intg_alerts_iter(self, intg: Integration) -> __alertsItr__:
+        """Get a integration alerts iterator.
+
+
+        Args:
+            intg (Integration): Integration for which to retrieve alerts.
+
+        Returns:
+            __alertsItr__: alerts iterator
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/services/%s/integrations/%s/alerts"
@@ -86,6 +108,21 @@ class IntegrationClient:
         is_enabled: bool = True,
         **kwargs
     ) -> Integration:
+        """Create a new integration
+
+        Args:
+            name (str): A string that represents the Integration object's name
+            summary (str): A string that represents the Integration object's summary
+            application (UUID): A system-generated string that represents the Application object's unique_id
+            escalation_policy (UUID):  A system-generated string that represents the Escalation Policy object's unique_id
+            default_urgency (int, optional): An integer that represents the Integration object's default_urgency. 0 is low and 1 is high.. Defaults to 1.
+            integration_type (int, optional): An integer that represents the Integration object's integration_type. 0 is alert and 1 is outbound.. Defaults to 0.
+            create_incidents_for (int, optional): An integer that represents the type of the Incidents this Integration object will create. 0 is do not create incidents. 1 is critical, 2 is critical and errors, and 3 is critical, errors and warnings.. Defaults to 1.
+            is_enabled (bool, optional): A boolean flag that represents whether an Integration is enabled or not. Defaults to True.
+
+        Returns:
+            Integration: Created Integration object
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/account/teams/%s/services/%s/integrations/"
@@ -107,6 +144,14 @@ class IntegrationClient:
         return self.get_intg_by_id(response["unique_id"])
 
     def update_intg(self, intg: Integration) -> Integration:
+        """Update the integration provided
+
+        Args:
+            intg (Integration): Integration to update
+
+        Returns:
+            Integration: Updated integration object
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.PUT,
             endpoint="/api/account/teams/%s/services/%s/integrations/%s/"
@@ -121,6 +166,11 @@ class IntegrationClient:
         return Integration(**response)
 
     def delete_intg(self, intg: Integration):
+        """Delete a integration
+
+        Args:
+            intg (Integration): Integration object to delete
+        """
         self._client.execute(
             method=ZendutyClientRequestMethod.DELETE,
             endpoint="/api/account/teams/%s/services/%s/integrations/%s"

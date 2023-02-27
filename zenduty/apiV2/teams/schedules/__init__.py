@@ -10,7 +10,12 @@ class ScheduleClient:
         self._client = client
         self._team = team
 
-    def get_all_schedules(self):
+    def get_all_schedules(self) -> list[Schedule]:
+        """Get all schedules
+
+        Returns:
+            list[Schedule]: list of schedules
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/schedules/" % str(self._team.unique_id),
@@ -18,7 +23,15 @@ class ScheduleClient:
         )
         return [Schedule(**r) for r in response]
 
-    def get_schedule_by_id(self, schedule_id: UUID):
+    def get_schedule_by_id(self, schedule_id: UUID) -> Schedule:
+        """Get schedule by ID
+
+        Args:
+            schedule_id (UUID): schedule id of schedule to fetch
+
+        Returns:
+            Schedule: Schedule object
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.GET,
             endpoint="/api/account/teams/%s/schedules/%s/"
@@ -36,6 +49,19 @@ class ScheduleClient:
         layers: list[dict],
         overrides: list[dict],
     ) -> Schedule:
+        """Create a schedule object
+
+        Args:
+            name (str): A string that represents the Schedule object's name
+            description (str): A string that represents the Schedule object's description
+            summary (str): A string that represents the Schedule object's summary
+            timezone (str): A formatted string that represents the Schedule object's time zone. You can check out the time zone list here https://timezonedb.com/time-zones
+            layers (list[dict]): An array of Schedule Layers. See LayerBuilder documentation for more information.
+            overrides (list[dict]): An array of Schedule Overrides. See OverrideBuilder documentation for more information.
+
+        Returns:
+            Schedule: Created Schedule object
+        """
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/account/teams/%s/schedules/" % str(self._team.unique_id),
