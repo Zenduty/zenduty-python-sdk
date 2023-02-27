@@ -104,15 +104,30 @@ class IncidentClient:
     def create_incident(
         self,
         summary: str,
-        status: str,
         title: str,
         service: UUID,
         assigned_to: UUID,
         escalation_policy: UUID,
         sla: UUID,
         team_priority: UUID,
+        status: int = 1,
         **kwargs
     ) -> Incident:
+        """Create a new incident
+
+        Args:
+            summary (str): A string that represents the Incident object's summary
+            status (int): An integer that represents the Incident object's status. 1 is triggered, 2 is acknowledged and 3 is resolved
+            title (str): A string that represents the Incident object's title
+            service (UUID): A system-generated string that represents the Service object's unique_id
+            assigned_to (UUID): A system-generated string that represents the User object's username
+            escalation_policy (UUID): A system-generated string that represents the Escalation Policy object's unique_id
+            sla (UUID): A system-generated string that represents the SLA object's unique_id
+            team_priority (UUID): A system-generated string that represents the Priority object's unique_id
+
+        Returns:
+            Incident: Incident object created
+        """        
         response = self._client.execute(
             method=ZendutyClientRequestMethod.POST,
             endpoint="/api/incidents/",
