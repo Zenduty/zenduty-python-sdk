@@ -22,4 +22,5 @@ zenduty/.DS_Store
 __pycache__/
  *.pyc
 venv/
-.idea/
+assets/
+/.pytest_cache/

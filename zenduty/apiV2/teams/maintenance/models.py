@@ -23,6 +23,7 @@ class TeamMaintenance(JsonSerializable):
     name: str
     time_zone: str
     repeat_until: Optional[datetime]
+    maintenance_template: str
 
     def __init__(
         self,
@@ -35,6 +36,7 @@ class TeamMaintenance(JsonSerializable):
         name: str,
         time_zone: str,
         repeat_until: Optional[int],
+        maintenance_template: str,
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.start_time = (
@@ -66,3 +68,4 @@ class TeamMaintenance(JsonSerializable):
                 if type(repeat_until) is datetime or repeat_until is None
                 else datetime.fromisoformat(repeat_until.replace("Z", "+00:00"))
             )
+        self.maintenance_template = maintenance_template
