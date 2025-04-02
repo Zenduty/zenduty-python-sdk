@@ -1,18 +1,19 @@
-from .maintenance import TeamMaintenanceClient
-from .oncall.models import OnCall
-from .postmortem import PostmortemClient
-from .priorities import PriorityClient
-from .roles import IncidentRoleClient
+from uuid import UUID
+
 from .sla import SLAClient
 from .tags import TagClient
-from .task_templates import TaskTemplateClient
-from ..client import ZendutyClient, ZendutyClientRequestMethod
-from ._models import Team, Member
-from uuid import UUID
-from .schedules import ScheduleClient
-from .escalation_policies import EscalationPolicyClient
+from .models import Team, Member
+from .oncall.models import OnCall
 from .services import ServiceClient
+from .roles import IncidentRoleClient
+from .schedules import ScheduleClient
+from .priorities import PriorityClient
+from .postmortem import PostmortemClient
+from .maintenance import TeamMaintenanceClient
+from .task_templates import TaskTemplateClient
+from .escalation_policies import EscalationPolicyClient
 
+from zenduty.apiV2.client import ZendutyClient, ZendutyClientRequestMethod
 
 class TeamsClient:
     def __init__(self, client: ZendutyClient):

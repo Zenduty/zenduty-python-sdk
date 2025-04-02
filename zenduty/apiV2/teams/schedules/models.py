@@ -1,8 +1,10 @@
-from datetime import datetime
+import json
+import logging
 from uuid import UUID
 from typing import Union
-import json
-from ...serializer import serialize, JsonSerializable
+from datetime import datetime
+from zenduty.apiV2.serializer import serialize, JsonSerializable
+
 
 
 class Restriction(JsonSerializable):
@@ -17,11 +19,14 @@ class Restriction(JsonSerializable):
         start_day_of_week: int,
         start_time_of_day: str,
         unique_id: Union[UUID, str],
+        **kwargs
     ) -> None:
         self.duration = duration
         self.start_day_of_week = start_day_of_week
         self.start_time_of_day = start_time_of_day
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -31,9 +36,11 @@ class User(JsonSerializable):
     user: str
     position: int
 
-    def __init__(self, user: str, position: int, unique_id: Union[UUID, str]) -> None:
+    def __init__(self, user: str, position: int, unique_id: Union[UUID, str], **kwargs) -> None:
         self.user = user
         self.position = position
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -63,6 +70,7 @@ class Layer(JsonSerializable):
         last_edited: Union[str, datetime, None],
         restriction_type: int,
         is_active: bool,
+        **kwargs
     ) -> None:
         self.shift_length = shift_length
         self.restrictions = (
@@ -88,6 +96,8 @@ class Layer(JsonSerializable):
         )
         self.restriction_type = restriction_type
         self.is_active = is_active
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -107,6 +117,7 @@ class Override(JsonSerializable):
         start_time: Union[str, datetime],
         end_time: Union[str, datetime],
         unique_id: Union[UUID, str],
+        **kwargs
     ) -> None:
         self.name = name
         self.user = user
@@ -117,6 +128,8 @@ class Override(JsonSerializable):
             end_time if type(end_time) is datetime else datetime.fromisoformat(end_time.replace("Z", "+00:00"))
         )
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -146,6 +159,7 @@ class Schedule(JsonSerializable):
         unique_id: Union[UUID, str],
         connections: int,
         shift_time_in_dst: bool,
+        **kwargs
     ) -> None:
         self.name = name
         self.summary = summary
@@ -157,6 +171,8 @@ class Schedule(JsonSerializable):
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.connections = connections
         self.shift_time_in_dst = shift_time_in_dst
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)

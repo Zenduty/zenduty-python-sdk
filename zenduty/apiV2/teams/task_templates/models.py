@@ -1,8 +1,8 @@
+import logging
 from uuid import UUID
 from datetime import datetime
 
 from zenduty.apiV2.serializer import JsonSerializable
-
 
 class TaskTemplate(JsonSerializable):
     unique_id: UUID
@@ -20,6 +20,7 @@ class TaskTemplate(JsonSerializable):
         creation_date: datetime,
         summary: str,
         due_immediately: int,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.team = team if type(team) is not str else UUID(team)
@@ -31,3 +32,5 @@ class TaskTemplate(JsonSerializable):
         )
         self.summary = summary
         self.due_immediately = due_immediately
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")

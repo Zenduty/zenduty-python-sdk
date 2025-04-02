@@ -1,3 +1,4 @@
+import logging
 from uuid import UUID
 from typing import List, Optional, Union
 from datetime import datetime
@@ -10,19 +11,23 @@ class IncidentIncident(JsonSerializable):
     title: str
     incident_number: int
 
-    def __init__(self, unique_id: str, title: str, incident_number: int) -> None:
+    def __init__(self, unique_id: str, title: str, incident_number: int, **kwargs) -> None:
         self.unique_id = unique_id
         self.title = title
         self.incident_number = incident_number
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
 
 class IncidentElement(JsonSerializable):
     unique_id: UUID
     incident: IncidentIncident
 
-    def __init__(self, unique_id: UUID, incident: Union[IncidentIncident, dict]) -> None:
+    def __init__(self, unique_id: UUID, incident: Union[IncidentIncident, dict], **kwargs) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.incident = incident if type(incident) is IncidentIncident else IncidentIncident(**incident)
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
 
 class Postmortem(JsonSerializable):
@@ -52,6 +57,7 @@ class Postmortem(JsonSerializable):
         amazon_link: str,
         creation_date: datetime,
         updated_at: datetime,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.author = author
@@ -72,3 +78,5 @@ class Postmortem(JsonSerializable):
         self.updated_at = (
             updated_at if type(updated_at) is datetime else datetime.fromisoformat(updated_at.replace("Z", "+00:00"))
         )
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")

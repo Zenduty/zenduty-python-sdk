@@ -1,3 +1,4 @@
+import logging
 from uuid import UUID
 from datetime import datetime
 
@@ -18,6 +19,7 @@ class Tag(JsonSerializable):
         name: str,
         creation_date: datetime,
         color: str,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.team = team if type(team) is not str else UUID(team)
@@ -28,3 +30,5 @@ class Tag(JsonSerializable):
             else datetime.fromisoformat(creation_date.replace("Z", "+00:00"))
         )
         self.color = color
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")

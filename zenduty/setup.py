@@ -17,5 +17,4 @@ setup(
         "idna==3.7",
         "certifi==2024.7.4"
     ],
-    scripts=["bin/client.py"],
 )

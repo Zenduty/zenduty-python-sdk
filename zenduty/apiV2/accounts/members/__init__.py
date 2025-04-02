@@ -1,9 +1,7 @@
-import json
 from uuid import UUID
 
+from .models import AccountMember, User
 from zenduty.apiV2.client import ZendutyClient, ZendutyClientRequestMethod
-from .models import AccountMember
-
 
 class AccountMemberClient:
     def __init__(self, client: ZendutyClient):

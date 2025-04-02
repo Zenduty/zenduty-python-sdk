@@ -1,7 +1,7 @@
 from uuid import UUID
 from zenduty.apiV2.authentication.zenduty_credential import ZendutyCredential
 from zenduty.apiV2.client import ZendutyClient
-from zenduty.apiV2.incidents import IncidentClient
+from zenduty.apiV2 import IncidentClient
 
 
 cred = ZendutyCredential("f3ab5c762c914dacca2c0c530b260fdf9fff0cc7")

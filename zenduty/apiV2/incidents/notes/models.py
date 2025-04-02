@@ -1,5 +1,5 @@
+import logging
 from datetime import datetime
-
 from zenduty.apiV2.serializer import JsonSerializable
 
 
@@ -19,6 +19,7 @@ class IncidentNote(JsonSerializable):
         note: str,
         user_name: str,
         creation_date: datetime,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id
         self.incident = incident
@@ -30,3 +31,5 @@ class IncidentNote(JsonSerializable):
             if type(creation_date) is datetime
             else datetime.fromisoformat(creation_date.replace("Z", "+00:00"))
         )
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')

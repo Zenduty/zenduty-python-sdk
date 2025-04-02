@@ -1,7 +1,6 @@
-import json
-from ...client import ZendutyClient, ZendutyClientRequestMethod
 from ..models import Incident
 from .models import IncidentNote
+from zenduty.apiV2.client import ZendutyClient, ZendutyClientRequestMethod
 
 
 class __IncidentNoteItr__:

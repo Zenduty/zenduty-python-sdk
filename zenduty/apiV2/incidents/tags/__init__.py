@@ -1,9 +1,8 @@
-import json
 from uuid import UUID
 
-from ...client import ZendutyClient, ZendutyClientRequestMethod
+from .models import Tag 
 from ..models import Incident
-from .models import Tag
+from zenduty.apiV2.client import ZendutyClient, ZendutyClientRequestMethod
 
 
 class IncidentTagClient:

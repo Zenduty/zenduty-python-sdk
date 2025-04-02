@@ -1,3 +1,4 @@
+import logging
 from uuid import UUID
 from datetime import datetime
 
@@ -20,6 +21,7 @@ class Priority(JsonSerializable):
         creation_date: datetime,
         color: str,
         team: int,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.name = name
@@ -31,3 +33,5 @@ class Priority(JsonSerializable):
         )
         self.color = color
         self.team = team
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")

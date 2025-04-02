@@ -1,8 +1,10 @@
+import json
+import logging
 from uuid import UUID
 from datetime import datetime
 from typing import List, Any, Optional
-from ..serializer import serialize, JsonSerializable
-import json
+
+from zenduty.apiV2.serializer import serialize, JsonSerializable
 
 
 class IntegrationObject(JsonSerializable):
@@ -27,6 +29,7 @@ class IntegrationObject(JsonSerializable):
         integration_key: str,
         is_enabled: bool,
         integration_type: int,
+        **kwargs
     ) -> None:
         self.name = name
         self.creation_date = (
@@ -41,6 +44,8 @@ class IntegrationObject(JsonSerializable):
         self.integration_key = integration_key
         self.is_enabled = is_enabled
         self.integration_type = integration_type
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
 
 class IncidentAlert(JsonSerializable):
@@ -73,6 +78,7 @@ class IncidentAlert(JsonSerializable):
         images: List[Any],
         urls: List[Any],
         notes: List[Any],
+        **kwargs
     ) -> None:
         self.integration_object = (
             integration_object
@@ -95,6 +101,8 @@ class IncidentAlert(JsonSerializable):
         self.images = images
         self.urls = urls
         self.notes = notes
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
 
 class EscalationPolicyObject(JsonSerializable):
@@ -102,10 +110,12 @@ class EscalationPolicyObject(JsonSerializable):
     name: str
     team: UUID
 
-    def __init__(self, unique_id: UUID, name: str, team: UUID) -> None:
+    def __init__(self, unique_id: UUID, name: str, team: UUID, **kwargs) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.name = name
         self.team = team if type(team) is not str else UUID(team)
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -152,6 +162,7 @@ class ServiceObject(JsonSerializable):
         under_maintenance: bool,
         team_name: Optional[str],
         acknowledgement_timeout_enabled: bool,
+        **kwargs
     ) -> None:
         self.name = name
         self.creation_date = (
@@ -176,6 +187,8 @@ class ServiceObject(JsonSerializable):
         self.under_maintenance = under_maintenance
         self.team_name = team_name
         self.acknowledgement_timeout_enabled = acknowledgement_timeout_enabled
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
 
 class SlaObject(JsonSerializable):
@@ -194,6 +207,7 @@ class SlaObject(JsonSerializable):
         acknowledge_time: int,
         resolve_time: int,
         creation_date: datetime,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.name = name
@@ -205,6 +219,8 @@ class SlaObject(JsonSerializable):
             if type(creation_date) is datetime
             else datetime.fromisoformat(creation_date.replace("Z", "+00:00"))
         )
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -216,11 +232,13 @@ class TeamPriorityObject(JsonSerializable):
     description: str
     color: str
 
-    def __init__(self, unique_id: UUID, name: str, description: str, color: str) -> None:
+    def __init__(self, unique_id: UUID, name: str, description: str, color: str, **kwargs) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.name = name
         self.description = description
         self.color = color
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -292,6 +310,7 @@ class Incident(JsonSerializable):
         postmortems: List[Any],
         postmortem_assignee: None,
         is_child_incident: bool = None,
+        **kwargs
     ) -> None:
         self.summary = summary
         self.incident_number = incident_number
@@ -336,6 +355,8 @@ class Incident(JsonSerializable):
         self.postmortems = postmortems
         self.postmortem_assignee = postmortem_assignee
         self.is_child_incident = is_child_incident
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)

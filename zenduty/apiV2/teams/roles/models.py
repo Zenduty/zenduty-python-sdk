@@ -1,7 +1,7 @@
+import logging
 from uuid import UUID
 from datetime import datetime
 from zenduty.apiV2.serializer import JsonSerializable
-
 
 class IncidentRole(JsonSerializable):
     unique_id: UUID
@@ -19,6 +19,7 @@ class IncidentRole(JsonSerializable):
         creation_date: datetime,
         rank: int,
         team: UUID = None,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.title = title
@@ -30,3 +31,5 @@ class IncidentRole(JsonSerializable):
         )
         self.rank = rank
         self.team = team if type(team) is not str else UUID(team)
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")

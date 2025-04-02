@@ -1,7 +1,9 @@
-from datetime import datetime
-from uuid import UUID
-from typing import List, Any, Union
 import json
+import logging
+from uuid import UUID
+from datetime import datetime
+from typing import List, Any, Union
+
 from zenduty.apiV2.serializer import JsonSerializable
 
 
@@ -27,6 +29,7 @@ class IntegrationObject(JsonSerializable):
         integration_key: str,
         is_enabled: bool,
         integration_type: int,
+        **kwargs
     ) -> None:
         self.name = name
         self.creation_date = (
@@ -41,6 +44,8 @@ class IntegrationObject(JsonSerializable):
         self.integration_key = integration_key
         self.is_enabled = is_enabled
         self.integration_type = integration_type
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
 
 class Payload:
@@ -48,10 +53,12 @@ class Payload:
     severity: str
     project: str
 
-    def __init__(self, status: str, severity: str, project: str) -> None:
+    def __init__(self, status: str, severity: str, project: str, **kwargs) -> None:
         self.status = status
         self.severity = severity
         self.project = project
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
     def to_json(self) -> str:
         return json.dumps(self.__dict__)
@@ -61,9 +68,11 @@ class URL:
     link_url: str
     link_text: str
 
-    def __init__(self, link_url: str, link_text: str) -> None:
+    def __init__(self, link_url: str, link_text: str, **kwargs) -> None:
         self.link_url = link_url
         self.link_text = link_text
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
     def to_json(self) -> str:
         return json.dumps(self.__dict__)
@@ -103,6 +112,7 @@ class Event(JsonSerializable):
         urls: List[Union[URL, dict]],
         payload: Union[Payload, dict] = None,
         incident_created: bool = None,
+        **kwargs
     ) -> None:
         self.integration_object = (
             integration_object
@@ -127,3 +137,5 @@ class Event(JsonSerializable):
         self.payload = payload
         self.urls = urls
         self.incident_created = incident_created
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')

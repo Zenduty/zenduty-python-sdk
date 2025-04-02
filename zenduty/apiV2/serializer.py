@@ -5,7 +5,7 @@ from uuid import UUID
 
 class JsonSerializable:
     def to_json(self):
-        return json.dumps(self, default=serialize, sort_keys=True, indent=4)
+        return json.loads(self, default=serialize, sort_keys=True, indent=4)
 
     def __repr__(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -15,9 +15,9 @@ class JsonSerializable:
 
 
 def serialize(o):
-    if type(o) is datetime:
+    if isinstance(o, datetime):
         return o.isoformat()
-    elif type(o) is UUID:
+    elif isinstance(o, UUID):
         return str(o)
     else:
         return o.__dict__

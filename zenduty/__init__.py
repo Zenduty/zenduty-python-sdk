@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
-__version__ = "1.0.0"
+__version__ = "1.2.0"
+
 
 # import apis into sdk package
 from .api.incidents_api import IncidentsApi
@@ -18,3 +19,6 @@ from .exceptions import ApiTypeError
 from .exceptions import ApiValueError
 from .exceptions import ApiKeyError
 from .exceptions import ApiException
+
+# import V2 APIs
+import apiV2

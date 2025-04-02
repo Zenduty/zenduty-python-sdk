@@ -1,12 +1,10 @@
-from uuid import UUID
-from datetime import datetime
 import json
-from typing import Optional
-from ....serializer import serialize, JsonSerializable
-
-from datetime import datetime
+import logging
 from uuid import UUID
+from datetime import datetime
 from typing import Optional, List, Any
+
+from zenduty.apiV2.serializer import serialize, JsonSerializable
 
 
 class IntegrationObject:
@@ -31,6 +29,7 @@ class IntegrationObject:
         integration_key: UUID,
         is_enabled: bool,
         integration_type: int,
+        **kwargs
     ) -> None:
         self.name = name
         self.creation_date = creation_date
@@ -45,6 +44,8 @@ class IntegrationObject:
         )
         self.is_enabled = is_enabled
         self.integration_type = integration_type
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
 
 class IntegrationAlert:
@@ -77,6 +78,7 @@ class IntegrationAlert:
         images: List[Any],
         urls: List[Any],
         notes: List[Any],
+        **kwargs
     ) -> None:
         self.integration_object = integration_object
         self.summary = summary
@@ -93,6 +95,8 @@ class IntegrationAlert:
         self.images = images
         self.urls = urls
         self.notes = notes
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
 
 class ApplicationReference:
@@ -121,6 +125,7 @@ class ApplicationReference:
         application_type: int,
         categories: str,
         documentation_link: str,
+        **kwargs
     ) -> None:
         self.name = name
         self.icon_url = icon_url
@@ -133,6 +138,8 @@ class ApplicationReference:
         self.application_type = application_type
         self.categories = categories
         self.documentation_link = documentation_link
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -201,6 +208,8 @@ class Integration(JsonSerializable):
         self.webhook_url = webhook_url
         if kwargs.get("auto_resolve_timeout", None) is not None:
             self.auto_resolve_timeout = kwargs.get("auto_resolve_timeout")
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)

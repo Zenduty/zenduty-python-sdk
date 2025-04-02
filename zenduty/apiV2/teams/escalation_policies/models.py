@@ -1,16 +1,21 @@
-from typing import Union
-from uuid import UUID
 import json
-from ...serializer import serialize, JsonSerializable
+import logging
+from uuid import UUID
+from typing import Union
+
+from zenduty.apiV2.serializer import serialize, JsonSerializable
+
 
 
 class Target(JsonSerializable):
     target_type: int
     target_id: str
 
-    def __init__(self, target_type: int, target_id: str) -> None:
+    def __init__(self, target_type: int, target_id: str, **kwargs) -> None:
         self.target_type = target_type
         self.target_id = target_id
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -21,10 +26,12 @@ class AssignmentSettings(JsonSerializable):
     assignee_strategy: int
     assignment_index: int
 
-    def __init__(self, unique_id: Union[UUID, str], assignee_strategy: int, assignment_index: int) -> None:
+    def __init__(self, unique_id: Union[UUID, str], assignee_strategy: int, assignment_index: int, **kwargs) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.assignee_strategy = assignee_strategy
         self.assignment_index = assignment_index
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -42,11 +49,14 @@ class Rule(JsonSerializable):
         targets: Union[list[Target], list[dict]],
         position: int,
         unique_id: Union[UUID, str],
+        **kwargs
     ) -> None:
         self.delay = delay
         self.targets = targets if type(targets) is not list[dict] else [Target(**l) for l in targets]
         self.position = position
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -78,6 +88,7 @@ class EscalationPolicy(JsonSerializable):
         global_ep: bool,
         connections: int,
         assignment_settings: AssignmentSettings,
+        **kwargs
     ) -> None:
         self.name = name
         self.summary = summary
@@ -90,6 +101,8 @@ class EscalationPolicy(JsonSerializable):
         self.global_ep = global_ep
         self.connections = connections
         self.assignment_settings = assignment_settings
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)

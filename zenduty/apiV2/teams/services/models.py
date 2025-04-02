@@ -1,7 +1,10 @@
-from datetime import datetime
-from uuid import UUID
 import json
-from ...serializer import serialize, JsonSerializable
+import logging
+from uuid import UUID
+from datetime import datetime
+
+from zenduty.apiV2.serializer import serialize, JsonSerializable
+
 
 
 class Service(JsonSerializable):
@@ -75,6 +78,8 @@ class Service(JsonSerializable):
         self.collation_time = collation_time
         if kwargs.get("team_name", None) is not None:
             self.team_name = kwargs.get("team_name", None)
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)

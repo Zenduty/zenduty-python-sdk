@@ -1,9 +1,7 @@
-import json
 from uuid import UUID
-from ...client import ZendutyClient, ZendutyClientRequestMethod
-from .._models import Team
+from ..models import Team
 from .models import IncidentRole
-
+from zenduty.apiV2.client import ZendutyClient, ZendutyClientRequestMethod
 
 class IncidentRoleClient:
     def __init__(self, client: ZendutyClient, team: Team):

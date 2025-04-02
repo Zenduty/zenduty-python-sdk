@@ -1,6 +1,7 @@
+import logging
+from uuid import UUID
 from datetime import datetime
 from typing import List, Any, Optional
-from uuid import UUID
 
 from zenduty.apiV2.serializer import JsonSerializable
 
@@ -31,6 +32,7 @@ class SLA(JsonSerializable):
         team: Optional[int] = None,
         summary: Optional[str] = "",
         time_zone: Optional[str] = None,
+        **kwargs
     ) -> None:
         self.escalations = escalations
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
@@ -47,3 +49,5 @@ class SLA(JsonSerializable):
             else datetime.fromisoformat(creation_date.replace("Z", "+00:00"))
         )
         self.summary = summary
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")

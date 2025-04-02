@@ -1,16 +1,19 @@
+import logging
 from uuid import UUID
 from datetime import datetime
 from typing import List, Optional
-from ...serializer import JsonSerializable
+from zenduty.apiV2.serializer import JsonSerializable
 
 
 class Service(JsonSerializable):
     unique_id: UUID
     service: UUID
 
-    def __init__(self, unique_id: Optional[UUID], service: UUID) -> None:
+    def __init__(self, unique_id: Optional[UUID], service: UUID, **kwargs) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.service = service if type(service) is not str else UUID(service)
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
 
 class TeamMaintenance(JsonSerializable):
@@ -35,6 +38,7 @@ class TeamMaintenance(JsonSerializable):
         name: str,
         time_zone: str,
         repeat_until: Optional[int],
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.start_time = (
@@ -66,3 +70,5 @@ class TeamMaintenance(JsonSerializable):
                 if type(repeat_until) is datetime or repeat_until is None
                 else datetime.fromisoformat(repeat_until.replace("Z", "+00:00"))
             )
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')

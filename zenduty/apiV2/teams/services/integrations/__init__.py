@@ -1,8 +1,8 @@
 from uuid import UUID
-from ....client import ZendutyClient, ZendutyClientRequestMethod
-from ..._models import Team
+from ...models import Team
 from ..models import Service
 from .models import Integration
+from zenduty.apiV2.client import ZendutyClient, ZendutyClientRequestMethod
 
 
 class IntegrationClient:

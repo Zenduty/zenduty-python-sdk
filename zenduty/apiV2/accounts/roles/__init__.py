@@ -1,6 +1,5 @@
-import json
-from ...client import ZendutyClient, ZendutyClientRequestMethod
 from .models import AccountRole
+from zenduty.apiV2.client import ZendutyClient, ZendutyClientRequestMethod
 
 
 class AccountRoleClient:

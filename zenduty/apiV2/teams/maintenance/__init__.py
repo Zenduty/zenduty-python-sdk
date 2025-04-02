@@ -2,7 +2,7 @@ import json
 from typing import Optional
 from uuid import UUID
 from ...client import ZendutyClient, ZendutyClientRequestMethod
-from .._models import Team
+from ..models import Team
 from .models import TeamMaintenance
 from datetime import datetime
 

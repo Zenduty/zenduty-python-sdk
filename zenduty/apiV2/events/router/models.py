@@ -1,3 +1,4 @@
+import logging
 from uuid import UUID
 
 from zenduty.apiV2.serializer import JsonSerializable
@@ -23,6 +24,7 @@ class Router(JsonSerializable):
         integration_key: str,
         created_at: str,
         account_identifier: str,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if isinstance(unique_id, UUID) else UUID(unique_id)
         self.name = name
@@ -32,3 +34,6 @@ class Router(JsonSerializable):
         self.integration_key = integration_key
         self.created_at = created_at
         self.account_identifier = account_identifier
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
+        

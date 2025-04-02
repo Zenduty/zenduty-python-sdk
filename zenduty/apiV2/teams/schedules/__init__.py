@@ -1,8 +1,8 @@
-import json
+
 from uuid import UUID
-from ...client import ZendutyClient, ZendutyClientRequestMethod
-from .._models import Team
-from .models import Schedule
+from ..models import Team
+from .models import Schedule, Override
+from zenduty.apiV2.client import ZendutyClient, ZendutyClientRequestMethod
 
 
 class ScheduleClient:
@@ -119,3 +119,25 @@ class ScheduleClient:
             endpoint="/api/account/teams/%s/schedules/%s/" % (str(self._team.unique_id), str(schedule.unique_id)),
             success_code=204,
         )
+    
+    def list_overrides(self, schedule: Schedule) -> list[Override]:
+        response = self._client.execute(
+            method=ZendutyClientRequestMethod.GET,
+            endpoint="/api/v2/account/teams/{}/schedules/{}/overrides/" % str(self._team.unique_id) % str(schedule.unique_id),
+        )
+        return [Override(**override) for override in response]
+    
+    def create_override(self, schedule: Schedule, override_name: str, user: str, start_time: str, end_time: str ) -> Override:
+        request_payload = {
+            "name": override_name,
+            "user": user,
+            "start_time": start_time,
+            "end_time": end_time,
+        }
+        response = self._client.execute(
+            method=ZendutyClientRequestMethod.POST,
+            endpoint="/api/v2/account/teams/{}/schedules/{}/overrides/" % str(self._team.unique_id) % str(schedule.unique_id),
+            request_payload=request_payload,
+            success_code=200,
+        )
+        return Override(**response)

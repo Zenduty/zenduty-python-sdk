@@ -1,9 +1,10 @@
-from uuid import UUID
-from datetime import datetime
-from typing import Union
 import json
-from ..serializer import serialize, JsonSerializable
+import logging
+from uuid import UUID
+from typing import Union
+from datetime import datetime
 
+from zenduty.apiV2.serializer import serialize, JsonSerializable
 
 class User(JsonSerializable):
     username: str
@@ -12,12 +13,14 @@ class User(JsonSerializable):
     email: str
 
     def __init__(
-        self, username: str, first_name: str, last_name: str, email: str
+        self, username: str, first_name: str, last_name: str, email: str, **kwargs
     ) -> None:
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
     def to_json(self):
         return json.dumps(self, default=serialize, sort_keys=True, indent=4)
@@ -37,6 +40,7 @@ class Member(JsonSerializable):
         user: Union[User, dict],
         joining_date: Union[datetime, str],
         role: int,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.team = team if type(team) is not str else UUID(team)
@@ -47,6 +51,8 @@ class Member(JsonSerializable):
             else datetime.fromisoformat(joining_date.replace("Z", "+00:00"))
         )
         self.role = role
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
 
 class Role(JsonSerializable):
@@ -65,6 +71,7 @@ class Role(JsonSerializable):
         description: str,
         creation_date: Union[datetime, str],
         rank: int,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is UUID else UUID(unique_id)
         self.team = team if type(team) is not str else UUID(team)
@@ -76,6 +83,8 @@ class Role(JsonSerializable):
             else datetime.fromisoformat(creation_date.replace("Z", "+00:00"))
         )
         self.rank = rank
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")
 
 
 class Team(JsonSerializable):
@@ -99,6 +108,7 @@ class Team(JsonSerializable):
         roles: Union[list[Role], list[dict]],
         private: bool,
         account_permissions: list[dict],
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if type(unique_id) is not str else UUID(unique_id)
         self.name = name
@@ -114,3 +124,5 @@ class Team(JsonSerializable):
         self.owner = owner
         self.roles = roles if type(roles) is list[Role] else [Role(**r) for r in roles]
         self.private = private
+        if kwargs:
+            logging.info(f"We have unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}")

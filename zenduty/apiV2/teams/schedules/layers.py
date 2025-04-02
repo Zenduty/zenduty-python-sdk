@@ -1,7 +1,7 @@
-from .models import Layer, User, Restriction
 from datetime import datetime, timedelta
+from .models import Layer, User, Restriction
 
-from ...serializer import JsonSerializable
+from zenduty.apiV2.serializer import JsonSerializable
 
 
 class LayersBuilder(JsonSerializable):

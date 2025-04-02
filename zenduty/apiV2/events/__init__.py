@@ -1,6 +1,6 @@
-from .router import RouterClient
-from ..client import ZendutyClient, ZendutyClientRequestMethod
+from zenduty.apiV2.events.router import RouterClient
 from .models import Event
+from zenduty.apiV2.client import ZendutyClient, ZendutyClientRequestMethod
 
 
 class EventClient:

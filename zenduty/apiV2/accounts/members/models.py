@@ -1,5 +1,6 @@
-from typing import Optional
+import logging
 from uuid import UUID
+from typing import Optional
 from datetime import datetime
 
 from zenduty.apiV2.serializer import JsonSerializable
@@ -12,12 +13,14 @@ class User(JsonSerializable):
     email: str
 
     def __init__(
-        self, username: str, first_name: str, last_name: str, email: str
+        self, username: str, first_name: str, last_name: str, email: str, **kwargs
     ) -> None:
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
 
 
 class AccountMember(JsonSerializable):
@@ -39,6 +42,7 @@ class AccountMember(JsonSerializable):
         is_verified: bool,
         team: Optional[UUID] = None,
         custom_role_id: Optional[str] = None,
+        **kwargs
     ) -> None:
         self.unique_id = unique_id if isinstance(unique_id, UUID) else unique_id
         self.time_zone = time_zone
@@ -50,3 +54,5 @@ class AccountMember(JsonSerializable):
         self.is_verified = is_verified
         self.team = team if isinstance(team, UUID) or team is None else UUID(team)
         self.custom_role_id = custom_role_id
+        if kwargs:
+            logging.info(f'Received unexpected return values for {self.__class__.__name__}: {list(kwargs.keys())}')
