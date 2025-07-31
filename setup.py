@@ -10,7 +10,7 @@ setup(
     author_email="vishwa@yellowant.com",
     packages=find_packages(),
     install_requires=[
-        "requests==2.32.3",
+        "requests==2.32.4",
         "urllib3==2.2.2",
         "six==1.9.0",
         "charset-normalizer==3.3.2",
