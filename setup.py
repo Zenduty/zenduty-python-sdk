@@ -11,7 +11,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "requests==2.32.3",
-        "urllib3==2.2.2",
+        "urllib3==2.6.3",
         "six==1.9.0",
         "charset-normalizer==3.3.2",
         "idna==3.7",
